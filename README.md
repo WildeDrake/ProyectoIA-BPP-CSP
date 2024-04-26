@@ -24,3 +24,11 @@ La mochila consiste en una matriz rectangular con espacios en blanco y espacios 
 Los objetos tendrán una forma (similar a una figura de Tetris), una posición dentro o fuera de la mochila y un color. 
 
 Las acciones consisten en poner un objeto en la mochila (objeto, posición, rotación) y hacer un viaje con la mochila.
+
+
+
+
+
+Versiones:
+- Python 3.8.2
+- 2.5.2
