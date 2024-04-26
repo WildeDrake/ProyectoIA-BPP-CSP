@@ -15,7 +15,7 @@ Ambiente: El ambiente de nuestro proyecto será:
 - Determinista (No tiene componentes aleatorios).
 - Secuencial (Pasa fase por fase).
 - Estático (El espacio de la mochila y de las variables a elegir no va a cambiar de las preestablecidas).
-- Discreto (Sólo hay tres acciones en total; Agregar/Quitar objetos de la mochila e ir al destino.
+- Discreto (Sólo hay tres acciones en total; Agregar/Quitar objetos de la mochila e ir al destino).
 - Agente singular.
 
 El agente, como antes mencionado, va a ser singular y dinámico.
@@ -31,4 +31,4 @@ Las acciones consisten en poner un objeto en la mochila (objeto, posición, rota
 
 Versiones:
 - Python 3.8.2
-- 2.5.2
+- Pygame 2.5.2
