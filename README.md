@@ -2,7 +2,7 @@
 <p style="text-align: center;">Semestre : 2024-1 </p>
 
 <p style="text-align: center;"> - Francy Pilar Jélvez Jen.</p>
-<p style="text-align: center;"> - Pedro Ignacio Palacios Rossy.</p>
+<p style="text-align: center;"> - Pedro Ignacio Palacios Rossi.</p>
 <p style="text-align: center;"> - Diego Joaquín Andrés Venegas Anabalón.</p>
 El problema de la mochila es un problema clásico en informática y matemáticas, especialmente en la teoría de la optimización y la combinatoria.
 
@@ -20,4 +20,6 @@ Ambiente: El ambiente de nuestro proyecto será:
 
 El agente, como antes mencionado, va a ser singular y dinámico.
 
-Las variables que van a tener los objetos de la mochila serán peso, tamaño y valor.
+la mochila consiste en una matriz rectangular con espacios en blanco y espacios ocupados.
+Los objetos tendrán una forma (similar a una figura de tetrix), una posición dentro o fuera de la mochila y un color.
+Las acciones consiten en poner un objeto en la mochila (objeto, posición, rotación) y hacer un viaje con la mochila.
