@@ -1,4 +1,5 @@
 import Mochila
+import  Objetos
 import Dibujar
 
 import pygame

@@ -15,9 +15,9 @@ class Mochila:
 
     def CrearObjetos(self):
         self.ConjObjetos.clear()
-        id , i = 0 , 0
+        id , i = 1 , 0
         while i <= self.tamano[0] * self.tamano[1]:
-            razonTamano = self.tamano[0] // random.randint(1, self.tamano[0]-1), self.tamano[1] // random.randint(1, self.tamano[1]-1)
+            razonTamano = self.tamano[0] // random.randint(1, self.tamano[0]), self.tamano[1] // random.randint(1, self.tamano[1])
             razonPeso = self.peso // random.randint(1, self.peso-1)
             razonValor = random.randint(1, 100)
             self.ConjObjetos.append( Objetos.Objeto(id, razonPeso, razonTamano, razonValor) )

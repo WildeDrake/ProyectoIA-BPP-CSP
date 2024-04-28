@@ -18,7 +18,6 @@ class Objeto:
             for j in range( self.tamano[1] ):
                 self.matriz[i].append(0)
         # Rellenar el espacio que ocupa de la matriz.
-        self.cuadraditos = 0
         pos = self.tamano[0] // 2, self.tamano[1] // 2
         # El while para si estan rellenas las ambas esquinas contrarias.
         while self.matriz[0][0] == id and self.matriz[ self.tamano[0]-1 ][ self.tamano[1]-1 ] == id or self.matriz[0][ self.tamano[1]-1 ] == id and self.matriz[ self.tamano[0]-1 ][0] == id:
