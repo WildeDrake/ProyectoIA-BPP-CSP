@@ -1,4 +1,4 @@
-from Objetos import Mochila
+import Mochila
 import pygame
 
 

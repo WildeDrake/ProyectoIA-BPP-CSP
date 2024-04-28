@@ -27,8 +27,6 @@ Las acciones consisten en poner un objeto en la mochila (objeto, posición, rota
 
 
 
-
-
-Versiones:
+## Requerimientos:
 - Python 3.8.2
 - Pygame 2.5.2
