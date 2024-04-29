@@ -10,67 +10,61 @@ def Juego():
     # Ciclo de juego
     while True:
         # Ciclo de juego - Seleccionar un objeto.
-        waaa = True
+        objetoseleccionado = 0
         while True:
-            objetoseleccionado = 0
+            if Controles.controles() == "derecha":
+                objeto = movs.Objeto_der(ConjObjetos, objetoseleccionado)
+            elif Controles.controles() == "izquierda":
+                objeto = movs.Objeto_izq(ConjObjetos, objetoseleccionado)
+            elif Controles.controles() == "rotar":
+                movs.RotarObjeto(objeto)
+            elif Controles.controles() == "invertir":
+                movs.InvertirObjeto(objeto)
+            elif Controles.controles() == "seleccionar":
+                movs.SacarObjeto(ConjObjetos, objeto.id)
+                waaa = True
+                break
+            elif Controles.controles() == "retroceder":
+                waaa = False
+                break
+        pos = 0, 0
+        # Ciclo de juego - Colocar un objeto.
+        if waaa is True:
             while True:
                 if Controles.controles() == "derecha":
-                    objeto = movs.Objeto_der(ConjObjetos, objetoseleccionado)
+                    pos = movs.Mover_der(mochila, objeto, pos)
                 elif Controles.controles() == "izquierda":
-                    objeto = movs.Objeto_izq(ConjObjetos, objetoseleccionado)
+                    pos = movs.Mover_izq(pos)
+                elif Controles.controles() == "arriba":
+                    pos = movs.Mover_arr(pos)
+                elif Controles.controles() == "abajo":
+                    pos = movs.Mover_aba(mochila, objeto, pos)
                 elif Controles.controles() == "rotar":
                     movs.RotarObjeto(objeto)
                 elif Controles.controles() == "invertir":
                     movs.InvertirObjeto(objeto)
                 elif Controles.controles() == "seleccionar":
-                    movs.SacarObjeto(ConjObjetos, objeto.id)
-                    waaa = True
+                    if movs.ColocarObjeto(mochila, objeto, pos):
+                        break
+                elif Controles.controles() == "retroceder":
+                    ConjObjetos.append(objeto)
+                    break
+        # Ciclo de juego - Quitar un objeto.
+        else:
+            while True:
+                if Controles.controles() == "derecha":
+                    pos = movs.Mover_der(mochila, objeto, pos)
+                elif Controles.controles() == "izquierda":
+                    pos = movs.Mover_izq(pos)
+                elif Controles.controles() == "arriba":
+                    pos = movs.Mover_arr(pos)
+                elif Controles.controles() == "abajo":
+                    pos = movs.Mover_aba(mochila, objeto, pos)
+                elif Controles.controles() == "seleccionar":
+                    movs.QuitarObjeto(mochila, pos, ConjObjetos)
                     break
                 elif Controles.controles() == "retroceder":
-                    waaa = False
                     break
-            pos = 0, 0
-            # Ciclo de juego - Colocar un objeto.
-            if waaa is True:
-                while True:
-                    if Controles.controles() == "derecha":
-                        pos = movs.Mover_der(mochila, objeto, pos)
-                    elif Controles.controles() == "izquierda":
-                        pos = movs.Mover_izq(pos)
-                    elif Controles.controles() == "arriba":
-                        pos = movs.Mover_arr(pos)
-                    elif Controles.controles() == "abajo":
-                        pos = movs.Mover_aba(mochila, objeto, pos)
-                    elif Controles.controles() == "rotar":
-                        movs.RotarObjeto(objeto)
-                    elif Controles.controles() == "invertir":
-                        movs.InvertirObjeto(objeto)
-                    elif Controles.controles() == "seleccionar":
-                        if movs.ColocarObjeto(mochila, objeto, pos):
-                            break
-                    elif Controles.controles() == "retroceder":
-                        ConjObjetos.append(objeto)
-                        break
-            # Ciclo de juego - Quitar un objeto.
-            else:
-                while True:
-                    if Controles.controles() == "derecha":
-                        pos = movs.Mover_der(mochila, objeto, pos)
-                    elif Controles.controles() == "izquierda":
-                        pos = movs.Mover_izq(pos)
-                    elif Controles.controles() == "arriba":
-                        pos = movs.Mover_arr(pos)
-                    elif Controles.controles() == "abajo":
-                        pos = movs.Mover_aba(mochila, objeto, pos)
-                    elif Controles.controles() == "seleccionar":
-                        movs.QuitarObjeto(mochila, pos, ConjObjetos)
-                        break
-                    elif Controles.controles() == "retroceder":
-                        break
-
-
-
-
 
 
 def CrearObjetos(mochila):
