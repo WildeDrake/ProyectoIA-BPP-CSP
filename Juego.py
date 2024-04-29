@@ -2,6 +2,7 @@ import Mochila
 import Objetos
 import movs
 import Controles
+import Dibujar
 import random
 
 def Juego():
