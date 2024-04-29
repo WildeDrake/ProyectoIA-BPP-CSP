@@ -36,6 +36,7 @@ class Objeto:
                 contBordes.add('izquierda')
             elif pos[1] == self.tamano[1] - 1:
                 contBordes.add('derecha')
+            # Moverse a una posición adyacente aleatoria.
             aux = random.randint(0, 3)
             if aux == 0:  # arriba
                 if pos[0] > 0:
