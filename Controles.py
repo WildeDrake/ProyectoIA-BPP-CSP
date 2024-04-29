@@ -50,7 +50,7 @@ def controles():
         return "retroceder"
     if keys[pygame.K_ESCAPE] and lastkey != pygame.K_ESCAPE:
         lastkey = pygame.K_ESCAPE
-        return "K_retroceder"
+        return "retroceder"
 
 
     if not any(keys):

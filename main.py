@@ -10,6 +10,14 @@ WIDTH, HEIGHT = 1800, 1000
 def main():
     mochila = Mochila.Mochila(100, (6, 6))
     mochila.CrearObjetos()
+    for objeto in mochila.ConjObjetos:
+        for i in range(objeto.tamano[0]):
+            for j in range(objeto.tamano[1]):
+                print(objeto.matriz[i][j], end=' ')
+            print()
+        print()
+
+
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
