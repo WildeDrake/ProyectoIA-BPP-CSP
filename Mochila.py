@@ -18,8 +18,9 @@ class Mochila:
         id , i = 1 , 0
         while i <= self.tamano[0] * self.tamano[1]:
             razonTamano = random.randint(2, self.tamano[0]-1), random.randint(2, self.tamano[1]-1)
-            razonPeso = self.peso // random.randint(1, self.peso-1)
             razonValor = random.randint(1, 100)
-            self.ConjObjetos.append( Objetos.Objeto(id, razonPeso, razonTamano, razonValor) )
+            self.ConjObjetos.append( Objetos.Objeto(id, None, razonTamano, razonValor) )
             i += self.ConjObjetos[id-1].cuadraditos
             id += 1
+        for objeto in self.ConjObjetos:
+            objeto.peso = (self.peso//len(self.ConjObjetos)) + random.randint(-self.peso//5, self.peso//5)
