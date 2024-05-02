@@ -7,4 +7,4 @@ class Mochila:
             self.matriz.append([])
             for j in range(tamano[1]):
                 self.matriz[i].append(0)
-        self.objetos = []                   # Lista de objetos en la mochila.
+        self.objetos = []                   # Lista de objetos en la mochila.   

@@ -2,7 +2,6 @@ import Juego
 
 import pygame
 
-
 WIDTH, HEIGHT = 1800, 1000
 
 def main():
@@ -14,7 +13,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        Juego.Juego()
+        Juego.Juego(screen)
         pygame.time.Clock().tick(60)
         pygame.display.flip()
     pygame.quit()

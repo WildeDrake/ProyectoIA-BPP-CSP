@@ -65,6 +65,8 @@ def ColocarObjeto(mochila, objeto, pos):
 def QuitarObjeto(mochila, pos, ConjObjetos):
     # Encontrar el objeto.
     id = mochila.matriz[pos[0]][pos[1]]
+    if id == 0:
+        return False
     # Quitar matriz del objeto.
     for i in range(mochila.tamano[0]):
         for j in range(mochila.tamano[1]):
@@ -75,6 +77,7 @@ def QuitarObjeto(mochila, pos, ConjObjetos):
         if objeto.id == id:
             ConjObjetos.append(mochila.objetos.remove(objeto))
             break
+    return True
 
 def VolverAlMenu():
     pass

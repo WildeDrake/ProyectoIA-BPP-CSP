@@ -1,5 +1,5 @@
 import random
-
+import Mochila
 
 class Objeto:
     def __init__(self, id, peso, tamano, valor):
@@ -50,3 +50,17 @@ class Objeto:
             elif aux == 3:  # derecha
                 if pos[1] < self.tamano[1] - 1:
                     pos = pos[0], pos[1] + 1
+
+
+def CrearObjetos(mochila):
+    id , i = 1 , 0
+    ConjObjetos = []
+    while i <= mochila.tamano[0] * mochila.tamano[1]:
+        razonTamano = random.randint(2, mochila.tamano[0]-1), random.randint(2, mochila.tamano[1]-1)
+        razonValor = random.randint(1, 100)
+        ConjObjetos.append( Objeto(id, None, razonTamano, razonValor) )
+        i += ConjObjetos[id-1].cuadraditos
+        id += 1
+    for objeto in ConjObjetos:
+        objeto.peso = (mochila.peso//len(ConjObjetos)) + random.randint(-mochila.peso//5, mochila.peso//5)
+    return ConjObjetos
