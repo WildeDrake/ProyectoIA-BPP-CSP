@@ -1,15 +1,15 @@
 import Mochila
 import Objetos
 import movs
-import Controles
 import Dibujar
 import random
+import pygame
 
 pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
 mochila = Mochila.Mochila(100, (6, 6))
-ConjObjetos = Objetos.CrearObjetos(mochila)
+ConjObjetos = Objetos.CrearObjetos((6,6),10)
 objetoseleccionado = 0
 objeto = ConjObjetos[0]
 pos = (0, 0)
@@ -22,56 +22,60 @@ def Juego(screen):
     global objetoseleccionado
     global objeto
     global pos
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+        # Ciclo de juego - Seleccionar un objeto.
+        if pantalla == 0:
+            if event.type == pygame.K_RIGHT or event.type == pygame.K_d:
+                objeto = movs.Objeto_der(ConjObjetos, objetoseleccionado)
+            elif event.type == pygame.K_LEFT or event.type == pygame.K_a:
+                objeto = movs.Objeto_izq(ConjObjetos, objetoseleccionado)
+            elif event.type == pygame.K_r:
+                movs.RotarObjeto(objeto)
+            elif event.type == pygame.K_i:
+                movs.InvertirObjeto(objeto)
+            elif event.type == pygame.K_SPACE or event.type == pygame.K_KP_ENTER:
+                movs.SacarObjeto(ConjObjetos, objeto.id)
+                pantalla = 1
+            elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
+                pantalla = 2
 
-    # Ciclo de juego - Seleccionar un objeto.
-    if pantalla == 0:
-        if Controles.controles() == "derecha":
-            objeto = movs.Objeto_der(ConjObjetos, objetoseleccionado)
-        elif Controles.controles() == "izquierda":
-            objeto = movs.Objeto_izq(ConjObjetos, objetoseleccionado)
-        elif Controles.controles() == "rotar":
-            movs.RotarObjeto(objeto)
-        elif Controles.controles() == "invertir":
-            movs.InvertirObjeto(objeto)
-        elif Controles.controles() == "seleccionar":
-            movs.SacarObjeto(ConjObjetos, objeto.id)
-            pantalla = 1
-        elif Controles.controles() == "retroceder":
-            pantalla = 2
-
-    # Ciclo de juego - Colocar un objeto.
-    elif pantalla == 1:
-        if Controles.controles() == "derecha":
-            pos = movs.Mover_der(mochila, objeto, pos)
-        elif Controles.controles() == "izquierda":
-            pos = movs.Mover_izq(pos)
-        elif Controles.controles() == "arriba":
-            pos = movs.Mover_arr(pos)
-        elif Controles.controles() == "abajo":
-            pos = movs.Mover_aba(mochila, objeto, pos)
-        elif Controles.controles() == "rotar":
-            movs.RotarObjeto(objeto)
-        elif Controles.controles() == "invertir":
-            movs.InvertirObjeto(objeto)
-        elif Controles.controles() == "seleccionar":
-            if movs.ColocarObjeto(mochila, objeto, pos):
+        # Ciclo de juego - Colocar un objeto.
+        elif pantalla == 1:
+            if event.type == pygame.KEYRIGHT or event.type == pygame.K_d:
+                pos = movs.Mover_der(mochila, objeto, pos)
+            elif event.type == pygame.KEYLEFT or event.type == pygame.K_a:
+                pos = movs.Mover_izq(pos)
+            elif event.type == pygame.K_UP or event.type == pygame.K_w:
+                pos = movs.Mover_arr(pos)
+            elif event.type == pygame.K_DOWN or event.type == pygame.K_s:
+                pos = movs.Mover_aba(mochila, objeto, pos)
+            elif event.type == pygame.K_r:
+                movs.RotarObjeto(objeto)
+            elif event.type == pygame.K_i:
+                movs.InvertirObjeto(objeto)
+            elif event.type == pygame.K_SPACE or event.type == pygame.K_KP_ENTER:
+                if movs.ColocarObjeto(mochila, objeto, pos):
+                    pantalla = 0
+            elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
+                ConjObjetos.append(objeto)
                 pantalla = 0
-        elif Controles.controles() == "retroceder":
-            ConjObjetos.append(objeto)
-            pantalla = 0
 
-    # Ciclo de juego - Quitar un objeto.
-    elif pantalla == 2:
-        if Controles.controles() == "derecha":
-            pos = movs.Mover_der(mochila, objeto, pos)
-        elif Controles.controles() == "izquierda":
-            pos = movs.Mover_izq(pos)
-        elif Controles.controles() == "arriba":
-            pos = movs.Mover_arr(pos)
-        elif Controles.controles() == "abajo":
-            pos = movs.Mover_aba(mochila, objeto, pos)
-        elif Controles.controles() == "seleccionar":
-            if movs.QuitarObjeto(mochila, pos, ConjObjetos) == True:
+        # Ciclo de juego - Quitar un objeto.
+        elif pantalla == 2:
+            if event.type == pygame.KEYRIGHT or event.type == pygame.K_d:
+                pos = movs.Mover_der(mochila, objeto, pos)
+            elif event.type == pygame.KEYLEFT or event.type == pygame.K_a:
+                pos = movs.Mover_izq(pos)
+            elif event.type == pygame.K_UP or event.type == pygame.K_w:
+                pos = movs.Mover_arr(pos)
+            elif event.type == pygame.K_DOWN or event.type == pygame.K_s:
+                pos = movs.Mover_aba(mochila, objeto, pos)
+            elif event.type == pygame.K_SPACE or event.type == pygame.K_KP_ENTER:
+                if movs.QuitarObjeto(mochila, pos, ConjObjetos) == True:
+                    pantalla = 0
+            elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
                 pantalla = 0
-        elif Controles.controles() == "retroceder":
-            pantalla = 0
+    Dibujar.dibujar_mochila(screen, mochila)
+    return True

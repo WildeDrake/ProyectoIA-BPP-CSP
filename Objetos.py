@@ -77,24 +77,3 @@ def CrearObjetos(tmno_max, n_objetos):
         objetos.append(Objeto(i, 1, 1, volums[i], tmno_max))
 
     return objetos
-
-
-#################### TEST ####################
-def main():
-    WIDTH, HEIGHT = 400, 400
-    pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption('generator test')
-    objs = CrearObjetos((20, 20), 100)
-
-    sum = 0
-    for obj in objs:
-        obj.mover(sum, 0)
-        sum += obj.get_size()[0] // Global.tmno_cuad + 1
-        obj.draw(screen)
-    pygame.display.flip()
-    pygame.time.wait(10000)  #
-
-
-if __name__ == "__main__":
-    main()
