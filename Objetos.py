@@ -6,15 +6,7 @@ import Global
 import Mochila
 
 
-class Bloque(pygame.sprite.Sprite):
-    def __init__(self, x, y, color, group):
-        super().__init__(group)
-        self.image = pygame.Surface((Global.tmno_cuad, Global.tmno_cuad))
-        self.image.fill(color)
-        self.rect = self.image.get_rect(topleft=(x * Global.tmno_cuad, y * Global.tmno_cuad))
-
-
-class Objeto(pygame.sprite.Group):
+class Objeto(pygame.sprite.Sprite):
     def __init__(self, id, peso, valor, volumen, tmno_max=(1000, 1000), color=None):
         super().__init__()
         self.id = id
@@ -24,10 +16,16 @@ class Objeto(pygame.sprite.Group):
             color = (random.randint(100, 255),
                      random.randint(100, 255),
                      random.randint(100, 255))
-        matriz = self.ConstruirForma(volumen, tmno_max)  # Crear la forma con volumen cuadraditos.
-        self.crear_bloques(matriz, color)  # Crear los bloques del objeto.
+        self.color = color
+        # Crear la forma con volumen cuadraditos.
+        self.matriz = self.ConstruirMatriz(volumen, tmno_max)
+        self.image = pygame.Surface((len(self.matriz[0]) * Global.tmno_cuad,
+                                     len(self.matriz) * Global.tmno_cuad))
+        self.image.fill((255,255,255))
+        self.rect = self.image.get_rect(topleft=(200, 200))
+        self.update()
 
-    def ConstruirForma(self, volumen, tmno_max):
+    def ConstruirMatriz(self, volumen, tmno_max):  # metodo feo y penca
         tmno_max = (tmno_max[0] // 2, tmno_max[1] // 2)  # dividir por 2, más facil de manejar
         lista_cuadrados = []  # Lista de cuadrados que forman el objeto.
         lista_posibles_cuadrados = [(0, 0)]  # Lista de cuadrados que pueden ser añadidos.
@@ -45,54 +43,33 @@ class Objeto(pygame.sprite.Group):
                         and -tmno_max[1] <= vecino[1] <= tmno_max[1]):
                     lista_posibles_cuadrados.append(vecino)
 
-        # Naturalizar la lista de cuadrados.
-        min_x, min_y = min([c[0] for c in lista_cuadrados]), min([c[1] for c in lista_cuadrados])
-        for i in range(len(lista_cuadrados)):
-            lista_cuadrados[i] = (lista_cuadrados[i][0] - min_x, lista_cuadrados[i][1] - min_y)
+        # crear matriz a partir de puntos
+        min_x = min([c[0] for c in lista_cuadrados])
+        max_x = max([c[0] for c in lista_cuadrados])
+        min_y = min([c[1] for c in lista_cuadrados])
+        max_y = max([c[1] for c in lista_cuadrados])
+        matriz = [[0 for _ in range(max_x - min_x + 1)] for _ in range(max_y - min_y + 1)]
+        for c in lista_cuadrados:
+            matriz[c[1] - min_y][c[0] - min_x] = self.id
 
-        return lista_cuadrados
+        return matriz
 
-    def crear_bloques(self, cuadrados, color):
-        for i in range(len(cuadrados)):
-            Bloque(cuadrados[i][0], cuadrados[i][1], color, self)
-
-    # tamaño del objeto
-    def __get_width(self):
-        return (max([bloque.rect.x for bloque in self.sprites()])
-                - min([bloque.rect.x for bloque in self.sprites()]))
-
-    def __get_height(self):
-        return (max([bloque.rect.y for bloque in self.sprites()])
-                - min([bloque.rect.y for bloque in self.sprites()]))
-
-    def get_size(self):
-        return self.__get_width(), self.__get_height()
-
-    # posicion global del objeto
-    def __get_x(self):
-        return min([bloque.rect.x for bloque in self.sprites()])
-
-    def __get_y(self):
-        return min([bloque.rect.y for bloque in self.sprites()])
-
-    def get_pos(self):
-        return self.__get_x(), self.__get_y()
-
-    def mover(self, x, y):
-        for bloque in self.sprites():
-            bloque.rect.x += x * Global.tmno_cuad
-            bloque.rect.y += y * Global.tmno_cuad
-
-    def rotar(self):
-        bloque0 = self.sprites()[0].rect.topleft
-        for bloque in self.sprites():
-            x, y = bloque.rect.topleft
-            bloque.rect.topleft = bloque0[0] + bloque0[1] - y, bloque0[1] - bloque0[0] + x
+    def update(self):
+        super().update()
+        self.rect.size = (len(self.matriz[0]) * Global.tmno_cuad,
+                            len(self.matriz) * Global.tmno_cuad)
+        self.image.fill((0, 0, 0, 0))  # fondo transparente
+        for i in range(len(self.matriz)):
+            for j in range(len(self.matriz[0])):
+                if self.matriz[i][j] != 0:
+                    pygame.draw.rect(self.image, self.color,
+                                     (j * Global.tmno_cuad, i * Global.tmno_cuad,
+                                      Global.tmno_cuad, Global.tmno_cuad))
 
 
 def CrearObjetos(tmno_max, n_objetos):
-    volums = [math.ceil(random.triangular(1,tmno_max[0]*tmno_max[1]/16,4)) for _ in range(n_objetos)]
-    print(tmno_max[0]*tmno_max[1]/4)
+    volums = [math.ceil(random.triangular(1, tmno_max[0] * tmno_max[1] / 16, 4)) for _ in range(n_objetos)]
+    print(tmno_max[0] * tmno_max[1] / 4)
     print(volums)
 
     objetos = []
@@ -112,11 +89,11 @@ def main():
 
     sum = 0
     for obj in objs:
-        obj.mover(sum,0)
-        sum += obj.get_size()[0] //Global.tmno_cuad + 1
+        obj.mover(sum, 0)
+        sum += obj.get_size()[0] // Global.tmno_cuad + 1
         obj.draw(screen)
     pygame.display.flip()
-    pygame.time.wait(10000) #
+    pygame.time.wait(10000)  #
 
 
 if __name__ == "__main__":
