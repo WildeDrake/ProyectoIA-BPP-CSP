@@ -1,9 +1,7 @@
 import random
 import math
 import pygame
-
 import Global
-import Mochila
 
 
 class Objeto(pygame.sprite.Sprite):

@@ -1,6 +1,4 @@
-import random
 import Juego
-import Objetos
 import pygame
 
 WIDTH, HEIGHT = 1800, 1000
