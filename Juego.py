@@ -8,7 +8,7 @@ import pygame
 pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
-mochila = Mochila.Mochila(100, (6, 6))
+mochila = Mochila.Mochila(100, (100, 100))
 ConjObjetos = Objetos.CrearObjetos((6,6),10)
 objetoseleccionado = 0
 objeto = ConjObjetos[0]

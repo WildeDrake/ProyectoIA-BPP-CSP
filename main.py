@@ -1,12 +1,11 @@
+import Global
 import Juego
 import pygame
-
-WIDTH, HEIGHT = 1800, 1000
 
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((Global.WIDTH, Global.HEIGHT))
     pygame.display.set_caption('MochilaJogo')
 
     while Juego.Juego(screen):
