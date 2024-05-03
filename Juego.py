@@ -78,4 +78,6 @@ def Juego(screen):
             elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
                 pantalla = 0
     Dibujar.dibujar_mochila(screen, mochila)
+    Dibujar.dibujar_menu(screen)
+    Dibujar.dibujar_objeto(screen, objeto)
     return True
