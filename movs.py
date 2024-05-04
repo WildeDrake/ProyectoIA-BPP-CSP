@@ -8,26 +8,23 @@ import Objetos
 def Objeto_der(ConjObjetos, objetoSeleccionado):
     if objetoSeleccionado == len(ConjObjetos):
         return ConjObjetos[0]
-    return ConjObjetos[objetoSeleccionado + 1]
+    return objetoSeleccionado + 1, ConjObjetos[objetoSeleccionado + 1]
 
 
 def Objeto_izq(ConjObjetos, objetoSeleccionado):
     if objetoSeleccionado == 0:
         return ConjObjetos[len(ConjObjetos) - 1]
-    return ConjObjetos[objetoSeleccionado - 1]
+    return objetoSeleccionado - 1, ConjObjetos[objetoSeleccionado - 1]
 
 
-def SacarObjeto(ConjObjetos, id):
-    for objeto in ConjObjetos:
-        if objeto.id == id:
-            ConjObjetos.remove(objeto)
+def SacarObjeto(ConjObjetos, objetoSeleccionado):
+    ConjObjetos.remove(objetoSeleccionado)
 
 
 # Para la manipulación de objetos ¿lo podremos hacer en el menu y en el contenedor?.
 def RotarObjeto(objeto):
     matriz = np.rot90(objeto.matriz, -1)
     objeto.matriz = matriz
-    # objeto.tamano = objeto.tamano[1], objeto.tamano[0]
 
 
 def InvertirObjeto(objeto):
@@ -84,7 +81,7 @@ def QuitarObjeto(contenedor, pos, ConjObjetos):
         for j in range(contenedor.tamano[1]):
             if contenedor.matriz[i][j] == id:
                 contenedor.matriz[i][j] = 0
-    # Quitar objeto de la contenedor y añadirlo al conjunto.
+    # Quitar objeto del contenedor y añadirlo al conjunto.
     for objeto in contenedor.objetos:
         if objeto.id == id:
             ConjObjetos.append(contenedor.objetos.remove(objeto))

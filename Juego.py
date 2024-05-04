@@ -26,18 +26,19 @@ def Juego(screen):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
+
         # Ciclo de juego - Seleccionar un objeto.
         if pantalla == 0:
             if event.type == pygame.K_RIGHT or event.type == pygame.K_d:
-                objeto = movs.Objeto_der(ConjObjetos, objetoseleccionado)
+                objetoseleccionado, objeto = movs.Objeto_der(ConjObjetos, objetoseleccionado)
             elif event.type == pygame.K_LEFT or event.type == pygame.K_a:
-                objeto = movs.Objeto_izq(ConjObjetos, objetoseleccionado)
+                objetoseleccionado, objeto = movs.Objeto_izq(ConjObjetos, objetoseleccionado)
             elif event.type == pygame.K_r:
                 movs.RotarObjeto(objeto)
             elif event.type == pygame.K_i:
                 movs.InvertirObjeto(objeto)
             elif event.type == pygame.K_SPACE or event.type == pygame.K_KP_ENTER:
-                movs.SacarObjeto(ConjObjetos, objeto.id)
+                movs.SacarObjeto(ConjObjetos, objetoseleccionado)
                 pantalla = 1
             elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
                 pantalla = 2
@@ -61,6 +62,7 @@ def Juego(screen):
                     pantalla = 0
             elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
                 ConjObjetos.append(objeto)
+                objetoseleccionado = len(ConjObjetos) - 1
                 pantalla = 0
 
         # Ciclo de juego - Quitar un objeto.
@@ -76,9 +78,11 @@ def Juego(screen):
             elif event.type == pygame.K_SPACE or event.type == pygame.K_KP_ENTER:
                 if movs.QuitarObjeto(contenedor, pos, ConjObjetos) == True:
                     pantalla = 0
+                    objetoseleccionado = len(ConjObjetos) - 1
+                    objeto = ConjObjetos[objetoseleccionado]
             elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
                 pantalla = 0
     Dibujar.dibujar_contenedor(screen, contenedor)
-    Dibujar.dibujar_menu(screen)
+    Dibujar.dibujar_flechas(screen)
     Dibujar.dibujar_objeto(screen, objeto)
     return True

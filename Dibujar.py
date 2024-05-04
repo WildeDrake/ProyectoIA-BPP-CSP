@@ -8,7 +8,7 @@ def dibujar_contenedor(screen, contenedor):
             pygame.draw.rect(screen, (255, 255, 255), (j * (Global.tamCasillas[0]-1) + Global.WIDTH//24 , i * (Global.tamCasillas[1]-1) + Global.HEIGHT/20, Global.tamCasillas[0], Global.tamCasillas[1]), 1)
 
 
-def dibujar_menu(screen):
+def dibujar_flechas(screen):
     left = pygame.image.load("src/left.png")
     right = pygame.image.load("src/right.png")
     left = pygame.transform.scale(left, (Global.WIDTH//18, Global.HEIGHT//10))
@@ -18,4 +18,4 @@ def dibujar_menu(screen):
 
 
 def dibujar_objeto(screen, objeto):
-    screen.blit(objeto.image, objeto.rect.topleft)
+    pass
