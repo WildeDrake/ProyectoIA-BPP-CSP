@@ -2,14 +2,15 @@ import Mochila
 import Objetos
 import movs
 import Dibujar
-import random
 import pygame
+import Global
 
 pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
-mochila = Mochila.Mochila(100, (100, 100))
-ConjObjetos = Objetos.CrearObjetos((6,6),10)
+mochila = Mochila.Mochila(100, Global.DimMochila)
+ConjSprites = Objetos.CrearObjetos((6,6),10)
+ConjObjetos = ConjSprites.sprites()
 objetoseleccionado = 0
 objeto = ConjObjetos[0]
 pos = (0, 0)

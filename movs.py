@@ -5,16 +5,16 @@ import Objetos
 
 # Para la selección de objetos.
 
-def Objeto_der(ConjObjetos, id):
-    if id == len(ConjObjetos):
+def Objeto_der(ConjObjetos, objetoSeleccionado):
+    if objetoSeleccionado == len(ConjObjetos):
         return ConjObjetos[0]
-    return ConjObjetos[id + 1]
+    return ConjObjetos[objetoSeleccionado + 1]
 
 
-def Objeto_izq(ConjObjetos, id):
-    if id == 0:
+def Objeto_izq(ConjObjetos, objetoSeleccionado):
+    if objetoSeleccionado == 0:
         return ConjObjetos[len(ConjObjetos) - 1]
-    return ConjObjetos[id - 1]
+    return ConjObjetos[objetoSeleccionado - 1]
 
 
 def SacarObjeto(ConjObjetos, id):
