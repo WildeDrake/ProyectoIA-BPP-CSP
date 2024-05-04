@@ -5,7 +5,7 @@ import Global
 def dibujar_contenedor(screen, contenedor):
     for i in range(contenedor.tamano[0]):
         for j in range(contenedor.tamano[1]):
-            pygame.draw.rect(screen, (255, 255, 255), (j * (Global.tamCasillas[0]-1) + Global.WIDTH//24 , i * (Global.tamCasillas[1]-1) + Global.HEIGHT/20, Global.tamCasillas[0], Global.tamCasillas[1]), 1)
+            pygame.draw.rect(screen, (255, 255, 255), (j * (Global.tamCasillas-1) + Global.WIDTH//24 , i * (Global.tamCasillas-1) + Global.HEIGHT/20, Global.tamCasillas, Global.tamCasillas), 1)
 
 
 def dibujar_flechas(screen):
