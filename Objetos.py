@@ -4,7 +4,7 @@ import pygame
 import pygame.sprite
 
 import Global
-import Mochila
+import Contenedor
 
 
 class Objeto(pygame.sprite.Sprite):

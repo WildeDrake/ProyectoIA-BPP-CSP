@@ -23,7 +23,7 @@ def SacarObjeto(ConjObjetos, id):
             ConjObjetos.remove(objeto)
 
 
-# Para la manipulación de objetos ¿lo podremos hacer en el menu y en la mochila?.
+# Para la manipulación de objetos ¿lo podremos hacer en el menu y en el contenedor?.
 def RotarObjeto(objeto):
     matriz = np.rot90(objeto.matriz, -1)
     objeto.matriz = matriz
@@ -35,15 +35,15 @@ def InvertirObjeto(objeto):
     objeto.matriz = matriz
 
 
-# Para la colocación del objeto en la mochila.
+# Para la colocación del objeto en la contenedor.
 def Mover_izq(pos):
     if pos[1] > 0:
         return pos[0], pos[1] - 1
     return pos
 
 
-def Mover_der(mochila, objeto, pos):
-    if pos[1] + objeto.tamano[1] < mochila.tamano[1]:
+def Mover_der(contenedor, objeto, pos):
+    if pos[1] + objeto.tamano[1] < contenedor.tamano[1]:
         return pos[0], pos[1] + 1
     return pos
 
@@ -54,40 +54,40 @@ def Mover_arr(pos):
     return pos
 
 
-def Mover_aba(mochila, objeto, pos):
-    if pos[0] + objeto.tamano[0] < mochila.tamano[0]:
+def Mover_aba(contenedor, objeto, pos):
+    if pos[0] + objeto.tamano[0] < contenedor.tamano[0]:
         return pos[0] + 1, pos[1]
     return pos
 
 
-def ColocarObjeto(mochila, objeto, pos):
+def ColocarObjeto(contenedor, objeto, pos):
     # Objeto colisiona con otro objeto.
     for i in range(objeto.tamano[0]):
         for j in range(objeto.tamano[1]):
-            if mochila.matriz[pos[0] + i][pos[1] + j] != 0:
+            if contenedor.matriz[pos[0] + i][pos[1] + j] != 0:
                 return False
     # Colocar el objeto.
     for i in range(objeto.tamano[0]):
         for j in range(objeto.tamano[1]):
-            mochila.matriz[pos[0] + i][pos[1] + j] = objeto.id
-    mochila.append(objeto)
+            contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.id
+    contenedor.append(objeto)
     return True
 
 
-def QuitarObjeto(mochila, pos, ConjObjetos):
+def QuitarObjeto(contenedor, pos, ConjObjetos):
     # Encontrar el objeto.
-    id = mochila.matriz[pos[0]][pos[1]]
+    id = contenedor.matriz[pos[0]][pos[1]]
     if id == 0:
         return False
     # Quitar matriz del objeto.
-    for i in range(mochila.tamano[0]):
-        for j in range(mochila.tamano[1]):
-            if mochila.matriz[i][j] == id:
-                mochila.matriz[i][j] = 0
-    # Quitar objeto de la mochila y añadirlo al conjunto.
-    for objeto in mochila.objetos:
+    for i in range(contenedor.tamano[0]):
+        for j in range(contenedor.tamano[1]):
+            if contenedor.matriz[i][j] == id:
+                contenedor.matriz[i][j] = 0
+    # Quitar objeto de la contenedor y añadirlo al conjunto.
+    for objeto in contenedor.objetos:
         if objeto.id == id:
-            ConjObjetos.append(mochila.objetos.remove(objeto))
+            ConjObjetos.append(contenedor.objetos.remove(objeto))
             break
     return True
 

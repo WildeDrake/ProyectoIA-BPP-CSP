@@ -1,4 +1,4 @@
-import Mochila
+import Contenedor
 import Objetos
 import movs
 import Dibujar
@@ -8,7 +8,7 @@ import Global
 pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
-mochila = Mochila.Mochila(100, Global.DimMochila)
+contenedor = Contenedor.Contenedor(100, Global.dimContenedor)
 ConjSprites = Objetos.CrearObjetos((6,6),10)
 ConjObjetos = ConjSprites.sprites()
 objetoseleccionado = 0
@@ -18,7 +18,7 @@ pos = (0, 0)
 
 def Juego(screen):
     global pantalla
-    global mochila
+    global contenedor
     global ConjObjetos
     global objetoseleccionado
     global objeto
@@ -45,19 +45,19 @@ def Juego(screen):
         # Ciclo de juego - Colocar un objeto.
         elif pantalla == 1:
             if event.type == pygame.KEYRIGHT or event.type == pygame.K_d:
-                pos = movs.Mover_der(mochila, objeto, pos)
+                pos = movs.Mover_der(contenedor, objeto, pos)
             elif event.type == pygame.KEYLEFT or event.type == pygame.K_a:
                 pos = movs.Mover_izq(pos)
             elif event.type == pygame.K_UP or event.type == pygame.K_w:
                 pos = movs.Mover_arr(pos)
             elif event.type == pygame.K_DOWN or event.type == pygame.K_s:
-                pos = movs.Mover_aba(mochila, objeto, pos)
+                pos = movs.Mover_aba(contenedor, objeto, pos)
             elif event.type == pygame.K_r:
                 movs.RotarObjeto(objeto)
             elif event.type == pygame.K_i:
                 movs.InvertirObjeto(objeto)
             elif event.type == pygame.K_SPACE or event.type == pygame.K_KP_ENTER:
-                if movs.ColocarObjeto(mochila, objeto, pos):
+                if movs.ColocarObjeto(contenedor, objeto, pos):
                     pantalla = 0
             elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
                 ConjObjetos.append(objeto)
@@ -66,19 +66,19 @@ def Juego(screen):
         # Ciclo de juego - Quitar un objeto.
         elif pantalla == 2:
             if event.type == pygame.KEYRIGHT or event.type == pygame.K_d:
-                pos = movs.Mover_der(mochila, objeto, pos)
+                pos = movs.Mover_der(contenedor, objeto, pos)
             elif event.type == pygame.KEYLEFT or event.type == pygame.K_a:
                 pos = movs.Mover_izq(pos)
             elif event.type == pygame.K_UP or event.type == pygame.K_w:
                 pos = movs.Mover_arr(pos)
             elif event.type == pygame.K_DOWN or event.type == pygame.K_s:
-                pos = movs.Mover_aba(mochila, objeto, pos)
+                pos = movs.Mover_aba(contenedor, objeto, pos)
             elif event.type == pygame.K_SPACE or event.type == pygame.K_KP_ENTER:
-                if movs.QuitarObjeto(mochila, pos, ConjObjetos) == True:
+                if movs.QuitarObjeto(contenedor, pos, ConjObjetos) == True:
                     pantalla = 0
             elif event.type == pygame.K_ESCAPE or event.type == pygame.K_BACKSPACE:
                 pantalla = 0
-    Dibujar.dibujar_mochila(screen, mochila)
+    Dibujar.dibujar_contenedor(screen, contenedor)
     Dibujar.dibujar_menu(screen)
     Dibujar.dibujar_objeto(screen, objeto)
     return True

@@ -1,15 +1,11 @@
 import pygame
 import Global
 
-tamCasillas = Global.WIDTH//(Global.DimMochila[0]*2) + 1, Global.HEIGHT//(Global.DimMochila[1]*1.1) + 1
 
-
-def dibujar_mochila(screen, mochila):
-    global tamCasillas
-    # Matriz de la mochila
-    for i in range(mochila.tamano[0]):
-        for j in range(mochila.tamano[1]):
-            pygame.draw.rect(screen, (255, 255, 255), (j * tamCasillas[0] + Global.WIDTH//24, i * tamCasillas[1] + Global.HEIGHT/20, tamCasillas[0], tamCasillas[1]), 1)
+def dibujar_contenedor(screen, contenedor):
+    for i in range(contenedor.tamano[0]):
+        for j in range(contenedor.tamano[1]):
+            pygame.draw.rect(screen, (255, 255, 255), (j * (Global.tamCasillas[0]-1) + Global.WIDTH//24 , i * (Global.tamCasillas[1]-1) + Global.HEIGHT/20, Global.tamCasillas[0], Global.tamCasillas[1]), 1)
 
 
 def dibujar_menu(screen):

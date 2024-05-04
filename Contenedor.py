@@ -1,4 +1,4 @@
-class Mochila:
+class Contenedor:
     def __init__(self, peso, tamano):
         self.peso = peso                    # valor númerico.
         self.tamano = tamano                # tamano es un 2-tupla (x,y)(en cuadraditos).}}
@@ -7,4 +7,4 @@ class Mochila:
             self.matriz.append([])
             for j in range(tamano[1]):
                 self.matriz[i].append(0)
-        self.objetos = []                   # Lista de objetos en la mochila.   
+        self.objetos = []                   # Lista de objetos en el contenedor.
