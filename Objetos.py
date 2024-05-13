@@ -1,18 +1,13 @@
 import random
 import math
 import pygame
-import pygame.sprite
 
 import Global
 import Contenedor
 
 
-class Objeto(pygame.sprite.Sprite):
-    def __init__(self, id, peso, valor, volumen, tmno_max=(1000, 1000), grupo=None, color=None):
-        if grupo is None:
-            super().__init__()
-        else:
-            super().__init__(grupo)
+class Objeto():
+    def __init__(self, id, peso, valor, volumen, tmno_max=(1000, 1000), color=None):
         self.id = id
         self.peso = peso  # Valor numérico.
         self.valor = valor
@@ -23,10 +18,6 @@ class Objeto(pygame.sprite.Sprite):
         self.color = color
         # Crear la forma con volumen cuadraditos.
         self.matriz = self.ConstruirMatriz(volumen, tmno_max)
-        self.image = pygame.Surface((len(self.matriz[0]) * Global.tmno_cuad,
-                                     len(self.matriz) * Global.tmno_cuad))
-        self.rect = self.image.get_rect(topleft=(0, 0))
-        self.update()
 
     def ConstruirMatriz(self, volumen, tmno_max):  # metodo feo y penca
         tmno_max = (tmno_max[0] // 2, tmno_max[1] // 2)  # dividir por 2, más facil de manejar
@@ -54,24 +45,14 @@ class Objeto(pygame.sprite.Sprite):
         for c in lista_cuadrados:
             matriz[c[1] - min_y][c[0] - min_x] = self.id
         return matriz
-    def update(self):
-        super().update()
-        self.rect.size = (len(self.matriz[0]) * Global.tmno_cuad,
-                            len(self.matriz) * Global.tmno_cuad)
-        self.image.fill((0, 0, 0, 0))  # fondo transparente
-        for i in range(len(self.matriz)):
-            for j in range(len(self.matriz[0])):
-                if self.matriz[i][j] != 0:
-                    pygame.draw.rect(self.image, self.color,
-                                     (j * Global.tmno_cuad, i * Global.tmno_cuad,
-                                      Global.tmno_cuad, Global.tmno_cuad))
 
 
-def CrearObjetos(tmno_max, n_objetos) -> pygame.sprite.Group:
+
+def CrearObjetos(tmno_max, n_objetos):
     volums = [math.ceil(random.triangular(1, tmno_max[0] * tmno_max[1] / 16, 4)) for _ in range(n_objetos)]
 
-    objetos = pygame.sprite.Group()
+    objetos = []
     for i in range(n_objetos):
-        Objeto(i, 1, 1, volums[i], tmno_max, objetos)
+        Objeto(i, 1, 1, volums[i], tmno_max)
 
     return objetos

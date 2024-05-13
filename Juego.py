@@ -9,8 +9,7 @@ pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
 contenedor = Contenedor.Contenedor(100, Global.dimContenedor)
-ConjSprites = Objetos.CrearObjetos((6,6),10)
-ConjObjetos = ConjSprites.sprites()
+ConjObjetos = Objetos.CrearObjetos((6, 6), 10)
 objetoseleccionado = 0
 objeto = ConjObjetos[0]
 pos = (0, 0)
