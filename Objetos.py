@@ -46,13 +46,21 @@ class Objeto():
             matriz[c[1] - min_y][c[0] - min_x] = self.id
         return matriz
 
+    def tamano(self):
+        return len(self.matriz), len(self.matriz[0])
 
 
-def CrearObjetos(tmno_max, n_objetos):
-    volums = [math.ceil(random.triangular(1, tmno_max[0] * tmno_max[1] / 16, 4)) for _ in range(n_objetos)]
+
+def CrearObjetos(tmno_max, vol_max, n_objetos):
+    volums = [math.ceil(random.triangular(1, min(tmno_max[0] * tmno_max[1], vol_max), 4)) for _ in range(n_objetos)]
 
     objetos = []
     for i in range(n_objetos):
-        Objeto(i, 1, 1, volums[i], tmno_max)
+        objetos.append(Objeto(i + 1, 1, 1, volums[i], tmno_max))
 
     return objetos
+
+def findInList(lista, id) -> Objeto:
+    for i in range(len(lista)):
+        if lista[i].id == id:
+            return lista[i]

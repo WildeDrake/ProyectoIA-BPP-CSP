@@ -40,7 +40,7 @@ def Mover_izq(pos):
 
 
 def Mover_der(contenedor, objeto, pos):
-    if pos[1] + objeto.tamano[1] < contenedor.tamano[1]:
+    if pos[1] + objeto.tamano()[1] < contenedor.tamano[1]:
         return pos[0], pos[1] + 1
     return pos
 
@@ -52,22 +52,22 @@ def Mover_arr(pos):
 
 
 def Mover_aba(contenedor, objeto, pos):
-    if pos[0] + objeto.tamano[0] < contenedor.tamano[0]:
+    if pos[0] + objeto.tamano()[0] < contenedor.tamano[0]:
         return pos[0] + 1, pos[1]
     return pos
 
 
 def ColocarObjeto(contenedor, objeto, pos):
     # Objeto colisiona con otro objeto.
-    for i in range(objeto.tamano[0]):
-        for j in range(objeto.tamano[1]):
+    for i in range(objeto.tamano()[0]):
+        for j in range(objeto.tamano()[1]):
             if contenedor.matriz[pos[0] + i][pos[1] + j] != 0:
                 return False
     # Colocar el objeto.
-    for i in range(objeto.tamano[0]):
-        for j in range(objeto.tamano[1]):
-            contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.id
-    contenedor.append(objeto)
+    for i in range(objeto.tamano()[0]):
+        for j in range(objeto.tamano()[1]):
+            contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.matriz[i][j]
+    contenedor.objetos.append(objeto)
     return True
 
 

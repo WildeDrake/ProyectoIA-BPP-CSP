@@ -9,7 +9,7 @@ pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
 contenedor = Contenedor.Contenedor(100, Global.dimContenedor)
-ConjObjetos = Objetos.CrearObjetos((6, 6), 10)
+ConjObjetos = Objetos.CrearObjetos(Global.dimContenedor, 16,  10)
 objetoseleccionado = 0
 objeto = ConjObjetos[0]
 pos = (0, 0)
@@ -83,5 +83,24 @@ def Juego(screen):
                 pantalla = 0
     Dibujar.dibujar_contenedor(screen, contenedor)
     Dibujar.dibujar_flechas(screen)
-    Dibujar.dibujar_objeto(screen, objeto)
+    Dibujar.dibujar_objeto(screen, objeto, pos)
     return True
+
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((Global.WIDTH, Global.HEIGHT))
+    pygame.display.set_caption("Proyecto de objetos")
+    clock = pygame.time.Clock()
+    running = True
+
+    movs.ColocarObjeto(contenedor, ConjObjetos[0], (0, 0))
+
+    while running:
+        screen.fill((0, 0, 0))
+        running = Juego(screen)
+        pygame.display.flip()
+        clock.tick(60)
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
