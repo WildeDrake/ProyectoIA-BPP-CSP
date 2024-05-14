@@ -33,4 +33,14 @@ def dibujar_flechas(screen):
 
 
 def dibujar_objeto(screen, objeto, pos):
-    pass
+    for i in range(objeto.tamano()[0]):
+        for j in range(objeto.tamano()[1]):
+            if objeto.matriz[i][j] != 0:
+                pygame.draw.rect(screen, objeto.color,
+                                 ((pos[1] + j) * (Global.tamCasillas - 1) + Global.WIDTH // 24,
+                                  (pos[0] + i) * (Global.tamCasillas - 1) + Global.HEIGHT / 20,
+                                  Global.tamCasillas, Global.tamCasillas))
+                pygame.draw.rect(screen, (255, 255, 255),
+                                 ((pos[1] + j) * (Global.tamCasillas - 1) + Global.WIDTH // 24,
+                                  (pos[0] + i) * (Global.tamCasillas - 1) + Global.HEIGHT / 20,
+                                  Global.tamCasillas, Global.tamCasillas), 1)

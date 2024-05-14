@@ -22,6 +22,7 @@ def SacarObjeto(ConjObjetos, objetoSeleccionado):
 
 
 # Para la manipulación de objetos ¿lo podremos hacer en el menu y en el contenedor?.
+# PedrP: fasilito fasilito
 def RotarObjeto(objeto):
     matriz = np.rot90(objeto.matriz, -1)
     objeto.matriz = matriz

@@ -100,6 +100,7 @@ def main():
         running = Juego(screen)
         pygame.display.flip()
         clock.tick(60)
+        print("\rPantalla: " + str(pantalla), end="")
     pygame.quit()
 
 if __name__ == "__main__":
