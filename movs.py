@@ -3,45 +3,48 @@ import pygame
 import Objetos
 
 
-# Para la selección de objetos.
-
-def Objeto_der(ConjObjetos, objetoSeleccionado):
-    if objetoSeleccionado == len(ConjObjetos):
-        return ConjObjetos[0]
-    return objetoSeleccionado + 1, ConjObjetos[objetoSeleccionado + 1]
-
-
-def Objeto_izq(ConjObjetos, objetoSeleccionado):
-    if objetoSeleccionado == 0:
-        return ConjObjetos[len(ConjObjetos) - 1]
-    return objetoSeleccionado - 1, ConjObjetos[objetoSeleccionado - 1]
-
-
-def SacarObjeto(ConjObjetos, objetoSeleccionado):
-    ConjObjetos.remove(objetoSeleccionado)
-
-
-# Para la manipulación de objetos ¿lo podremos hacer en el menu y en el contenedor?.
-# PedrP: fasilito fasilito
+# Para la manipulación de objetos en cualquier pantalla.
 def RotarObjeto(objeto):
     matriz = np.rot90(objeto.matriz, -1)
     objeto.matriz = matriz
 
 
 def InvertirObjeto(objeto):
-    matriz = np.flipiud(objeto.matriz)
+    matriz = np.flip(objeto.matriz, 1)
     objeto.matriz = matriz
 
 
-# Para la colocación del objeto en la contenedor.
+# Para la selección de objetos (pantalla == 0).
+
+def Objeto_der(ConjObjetos, objetoSeleccionado):
+    if objetoSeleccionado == len(ConjObjetos) - 1:
+        return 0, ConjObjetos[0]
+    return objetoSeleccionado + 1, ConjObjetos[objetoSeleccionado + 1]
+
+
+def Objeto_izq(ConjObjetos, objetoSeleccionado):
+    if objetoSeleccionado == 0:
+        return len(ConjObjetos) - 1, ConjObjetos[len(ConjObjetos) - 1]
+    return objetoSeleccionado - 1, ConjObjetos[objetoSeleccionado - 1]
+
+
+def SacarObjeto(ConjObjetos, objetoSeleccionado):
+    ConjObjetos.remove(ConjObjetos[objetoSeleccionado])
+
+
+# Para manipulacion en contenedor (pantalla == 1 o pantalla == 2).
+
 def Mover_izq(pos):
     if pos[1] > 0:
         return pos[0], pos[1] - 1
     return pos
 
-
-def Mover_der(contenedor, objeto, pos):
+def Mover_der1(contenedor, objeto, pos):
     if pos[1] + objeto.tamano()[1] < contenedor.tamano[1]:
+        return pos[0], pos[1] + 1
+    return pos
+def Mover_der2(contenedor, pos):
+    if pos[1] + 1 < contenedor.tamano[1]:
         return pos[0], pos[1] + 1
     return pos
 
@@ -52,25 +55,34 @@ def Mover_arr(pos):
     return pos
 
 
-def Mover_aba(contenedor, objeto, pos):
+def Mover_aba1(contenedor, objeto, pos):
     if pos[0] + objeto.tamano()[0] < contenedor.tamano[0]:
         return pos[0] + 1, pos[1]
     return pos
+def Mover_aba2(contenedor, pos):
+    if pos[0] + 1 < contenedor.tamano[0]:
+        return pos[0] + 1, pos[1]
+    return pos
 
+
+# Para la colocación del objeto en el contenedor (pantalla == 1).
 
 def ColocarObjeto(contenedor, objeto, pos):
     # Objeto colisiona con otro objeto.
     for i in range(objeto.tamano()[0]):
         for j in range(objeto.tamano()[1]):
-            if contenedor.matriz[pos[0] + i][pos[1] + j] != 0:
+            if objeto.matriz[i][j] != 0 and contenedor.matriz[pos[0] + i][pos[1] + j] != 0:
                 return False
     # Colocar el objeto.
     for i in range(objeto.tamano()[0]):
         for j in range(objeto.tamano()[1]):
-            contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.matriz[i][j]
+            if objeto.matriz[i][j] != 0:
+                contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.matriz[i][j]
     contenedor.objetos.append(objeto)
     return True
 
+
+# Para quitar objeto del contenedor (pantalla == 2).
 
 def QuitarObjeto(contenedor, pos, ConjObjetos):
     # Encontrar el objeto.
@@ -93,31 +105,3 @@ def QuitarObjeto(contenedor, pos, ConjObjetos):
 def VolverAlMenu():
     pass
 
-
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((1800, 900))
-    pygame.display.set_caption('test')
-    objs = Objetos.CrearObjetos((20, 20), 1)
-    objs.sprites()[0].rect.topleft = (100, 100)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    RotarObjeto(objs[0])
-                    objs[0].update()
-                if event.key == pygame.K_ESCAPE:
-                    return False
-        screen.fill((0, 0, 0))
-        objs.draw(screen)
-        pygame.display.flip()
-        pygame.time.Clock().tick(60)
-
-    pygame.quit()
-
-
-if __name__ == "__main__":
-    main()
