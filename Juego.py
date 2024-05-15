@@ -91,8 +91,7 @@ def Juego(screen):
     screen.fill((0, 0, 0))
     Dibujar.dibujar_contenedor(screen, contenedor)
     if pantalla == 0:
-        Dibujar.dibujar_flechas(screen)
-        Dibujar.dibujar_seleccion(screen, objeto)
+        Dibujar.dibujar_seleccion(screen, objeto, objetoseleccionado, ConjObjetos)
     if pantalla == 1:
         Dibujar.dibujar_objeto(screen, objeto, pos)
     if pantalla == 2:

@@ -56,7 +56,7 @@ def CrearObjetos(tmno_max, vol_max, n_objetos):
 
     objetos = []
     for i in range(n_objetos):
-        objetos.append(Objeto(i + 1, 1, 1, volums[i], tmno_max))
+        objetos.append(Objeto(i + 1, random.randint(1,100), random.randint(1,100), volums[i], tmno_max))
 
     return objetos
 
