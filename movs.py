@@ -97,7 +97,9 @@ def QuitarObjeto(contenedor, pos, ConjObjetos):
     # Quitar objeto del contenedor y añadirlo al conjunto.
     for objeto in contenedor.objetos:
         if objeto.id == id:
-            ConjObjetos.append(contenedor.objetos.remove(objeto))
+            aux = objeto
+            contenedor.objetos.remove(objeto)
+            ConjObjetos.append(aux)
             break
     return True
 
