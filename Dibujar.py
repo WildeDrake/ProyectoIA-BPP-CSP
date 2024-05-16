@@ -41,8 +41,6 @@ def dibujar_seleccion(screen, objeto, objetoSeleccionado, conjObjetos):
                 pygame.draw.rect(screen, objeto.color,(j * (Global.tamCasillas - 1) + Global.WIDTH // 1.4, i * (Global.tamCasillas - 1) + Global.HEIGHT // 2, Global.tamCasillas, Global.tamCasillas))
     # Valor del objeto.
     font = pygame.font.Font(None, 36)
-    text = font.render("Peso: " + str(objeto.peso) + "         Valor: " + str(objeto.valor), True, (255, 255, 255))
-    screen.blit(text, (Global.WIDTH // 1.45, Global.HEIGHT // 1.1))
     text = font.render(str(objetoSeleccionado+1) + " / " + str(len(conjObjetos)), True, (255, 255, 255))
     screen.blit(text, (Global.WIDTH // 1.34, Global.HEIGHT // 2.3))
     font = pygame.font.Font(None, 25)

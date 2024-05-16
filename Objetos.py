@@ -7,14 +7,13 @@ import Contenedor
 
 
 class Objeto():
-    def __init__(self, id, peso, valor, volumen, tmno_max=(1000, 1000), color=None):
+    def __init__(self, id, valor, volumen, tmno_max=(1000, 1000), color=None):
         self.id = id
-        self.peso = peso  # Valor numérico.
         self.valor = valor
         if color is None:
-            color = (random.randint(100, 255),
-                     random.randint(100, 255),
-                     random.randint(100, 255))
+            color = (random.randint(100, 250),
+                     random.randint(100, 250),
+                     random.randint(100, 250))
         self.color = color
         # Crear la forma con volumen cuadraditos.
         self.matriz = self.ConstruirMatriz(volumen, tmno_max)
@@ -50,15 +49,20 @@ class Objeto():
         return len(self.matriz), len(self.matriz[0])
 
 
+def CrearObjetos(tmno_contenedor, vol_max):
 
-def CrearObjetos(tmno_max, vol_max, n_objetos):
-    volums = [math.ceil(random.triangular(1, min(tmno_max[0] * tmno_max[1], vol_max), 4)) for _ in range(n_objetos)]
+    volums = []
+    vol_sum = 0
+    while vol_sum < tmno_contenedor[0] * tmno_contenedor[1] * 3:
+        volums.append(math.ceil(random.triangular(1, min(tmno_contenedor[0] * tmno_contenedor[1], vol_max), 4)))
+        vol_sum += volums[-1]
 
     objetos = []
-    for i in range(n_objetos):
-        objetos.append(Objeto(i + 1, random.randint(1,100), random.randint(1,100), volums[i], tmno_max))
+    for i in range(len(volums)):
+        objetos.append(Objeto(i + 1, random.randint(1, 100), volums[i], tmno_contenedor))
 
     return objetos
+
 
 def findInList(lista, id) -> Objeto:
     for i in range(len(lista)):
