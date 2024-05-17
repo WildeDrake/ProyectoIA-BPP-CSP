@@ -73,3 +73,10 @@ def dibujar_objeto(screen, objeto, pos):
 def dibujar_delete(screen, pos):
     pygame.draw.rect(screen, (255, 255, 255),(pos[1] * (Global.tamCasillas - 1) + Global.WIDTH // 24, pos[0] * (Global.tamCasillas - 1) + Global.HEIGHT / 20, Global.tamCasillas, Global.tamCasillas))
 
+def dibujar_win(screen, contenedor):
+    screen.fill((0, 0, 0))
+    font = pygame.font.Font(None, Global.WIDTH // 10)
+    text = font.render("Fin del Juego", True, (255, 255, 255))
+    screen.blit(text, (Global.WIDTH // 3, Global.HEIGHT // 2.3))
+    text = font1.render("Valor del contenedor: " + str(contenedor.valor), True, (255, 255, 255))
+    screen.blit(text, (Global.WIDTH // 2.1, Global.HEIGHT // 1.6))

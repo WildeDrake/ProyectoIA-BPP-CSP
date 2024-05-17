@@ -17,14 +17,20 @@ pos = (0, 0)
 
 def Juego(screen):
     global pantalla
+    if pantalla == 3:
+        pygame.time.wait(3000)
+        return False
     global contenedor
     global ConjObjetos
     global objetoseleccionado
     global objeto
     global pos
+    global GG
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             return False
+
         if event.type == pygame.KEYDOWN:
 
             # Ciclo de juego - Seleccionar un objeto.
@@ -88,13 +94,21 @@ def Juego(screen):
                 elif event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
                     pantalla = 0
                     pos = (0, 0)
+                    # Pantalla de victoria.
+            if len(ConjObjetos) == 0 or event.key == pygame.K_o:
+                pantalla = 3
+
     screen.fill((0, 0, 0))
-    Dibujar.dibujar_contenedor(screen, contenedor)
     if pantalla == 0:
+        Dibujar.dibujar_contenedor(screen, contenedor)
         Dibujar.dibujar_seleccion(screen, objeto, objetoseleccionado, ConjObjetos, contenedor)
     if pantalla == 1:
+        Dibujar.dibujar_contenedor(screen, contenedor)
         Dibujar.dibujar_objeto(screen, objeto, pos)
     if pantalla == 2:
+        Dibujar.dibujar_contenedor(screen, contenedor)
         Dibujar.dibujar_delete(screen, pos)
+    if pantalla == 3:
+        Dibujar.dibujar_win(screen, contenedor)
 
     return True
