@@ -79,6 +79,7 @@ def ColocarObjeto(contenedor, objeto, pos):
             if objeto.matriz[i][j] != 0:
                 contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.matriz[i][j]
     contenedor.objetos.append(objeto)
+    contenedor.valor += objeto.valor
     return True
 
 
@@ -98,6 +99,7 @@ def QuitarObjeto(contenedor, pos, ConjObjetos):
     for objeto in contenedor.objetos:
         if objeto.id == id:
             aux = objeto
+            contenedor.valor -= objeto.valor
             contenedor.objetos.remove(objeto)
             ConjObjetos.append(aux)
             break

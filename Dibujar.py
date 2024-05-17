@@ -22,11 +22,7 @@ def dibujar_contenedor(screen, contenedor):
                               i * (Global.tamCasillas - 1) + Global.HEIGHT / 20,
                               Global.tamCasillas, Global.tamCasillas), 1)
 
-
-
-
-
-def dibujar_seleccion(screen, objeto, objetoSeleccionado, conjObjetos):
+def dibujar_seleccion(screen, objeto, objetoSeleccionado, conjObjetos, contenedor):
     # Flechas de selección.
     left = pygame.image.load("src/left.png")
     right = pygame.image.load("src/right.png")
@@ -40,10 +36,14 @@ def dibujar_seleccion(screen, objeto, objetoSeleccionado, conjObjetos):
             if objeto.matriz[i][j] != 0:
                 pygame.draw.rect(screen, objeto.color,(j * (Global.tamCasillas - 1) + Global.WIDTH // 1.4, i * (Global.tamCasillas - 1) + Global.HEIGHT // 2, Global.tamCasillas, Global.tamCasillas))
     # Valor del objeto.
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, Global.WIDTH // 50)
     text = font.render(str(objetoSeleccionado+1) + " / " + str(len(conjObjetos)), True, (255, 255, 255))
     screen.blit(text, (Global.WIDTH // 1.34, Global.HEIGHT // 2.3))
-    font = pygame.font.Font(None, 25)
+    text = font.render("Valor: " + str(objeto.valor), True, (255, 255, 255))
+    screen.blit(text, (Global.WIDTH // 1.35, Global.HEIGHT // 1.1))
+    text = font.render("Valor en Contenedor: " + str(contenedor.valor), True, (255, 255, 255))
+    screen.blit(text, (Global.WIDTH // 1.45, Global.HEIGHT // 1.05))
+    font = pygame.font.Font(None, Global.WIDTH // 70)
     text = font.render(" r - rotar  |  i - invertir  |  espacio/enter - ""seleccionar objeto  |  escape/backspace - quitar objetos", True, (255, 255, 255))
     screen.blit(text, (Global.WIDTH // 1.8, Global.HEIGHT // 5))
 
