@@ -1,11 +1,8 @@
 import random
 import math
 from looplist import looplist
-import pygame
 
-import Global
-import Contenedor
-
+random.seed(777)
 
 class Objeto():
     def __init__(self, id, valor, volumen=None, tmno_max=(1000, 1000), matriz=None, color=None):

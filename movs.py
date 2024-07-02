@@ -1,6 +1,4 @@
 import numpy as np
-import pygame
-import Objetos
 
 
 # Para la manipulación de objetos en cualquier pantalla.

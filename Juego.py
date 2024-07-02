@@ -8,7 +8,7 @@ import Global
 pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
-contenedor = Contenedor.Contenedor(100, Global.dimContenedor)
+contenedor = Contenedor.Contenedor(Global.dimContenedor)
 ConjObjetos = Objetos.CrearObjetos(Global.dimContenedor, 16)
 objetoseleccionado = 0
 objeto = ConjObjetos[0]
@@ -25,7 +25,6 @@ def Juego(screen):
     global objetoseleccionado
     global objeto
     global pos
-    global GG
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
