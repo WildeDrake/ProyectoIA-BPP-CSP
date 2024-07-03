@@ -5,6 +5,10 @@ import numpy.random as random
 from scipy.spatial.distance import pdist
 import numpy as np
 
+import Global
+import Contenedor
+import Objetos
+
 """
 t0: un int, la temperatura inicial
 alpha: un int, el factor de enfriamiento
@@ -15,18 +19,16 @@ y:  list N size: position y
 
 
 class simulated_annealing:
-    def __init__(self, x, y, t0, alpha, show):
+    def __init__(self, ConjObjetos, t0, alpha, show, heuristic: callable):
         self.t0 = t0 # Temperatura inicial.
         self.alpha = alpha # Factor de enfriamiento.
-        self.x = x  # Posicion x.
-        self.y = y  # Posicion y.
-        self.n = len(x) # Numero de nodos.
-        self.node = [[x[i], y[i]] for i in range(self.n)]   # Nodos.
-        self.distance = pdist(self.node)    # Distancia entre nodos.
         self.outIte = 300   # Numero de iteraciones.
         self.inIte = 20    # Numero de iteraciones.
         self.p = np.array([0.3, 0.3, 0.4])  # swap/reversion/insertion
         self.show_animation = show
+        self.heuristic = heuristic
+        self.n = len(ConjObjetos) # Numero de nodos.
+        self.ConjObjetos = ConjObjetos # Lista de objetos.
 
     def search(self):
         r0 = permutation(self.n) # Es una permutacion aleatoria de los números del 0 al n-1.
@@ -84,14 +86,11 @@ class simulated_annealing:
         '''
         here the function value (what we are going to minimize) is the total length of path
         '''
-        f = 0
-        x = x0.copy()
-        x = np.append(x, x[0])
-        for i in range(self.n):
-            u = x[i]
-            v = x[i + 1]
-            f += (self.x[u] - self.x[v]) ** 2 + (self.y[u] - self.y[v]) ** 2
-        return f
+
+        cont = Contenedor.Contenedor(Global.dimContenedor)
+        self.heuristic(cont, self.ConjObjetos)
+
+        return Global.volumen - cont.valor
 
 # Esta funcion nos da un vecino de x. En nuestro caso esta por definirse lo que consideraremos vecino. (¿sera una permuitacion cercana?)
     def get_neighbor(self, x):
