@@ -5,18 +5,23 @@ from looplist import looplist
 random.seed(777)
 
 class Objeto():
-    def __init__(self, id, valor, volumen=None, tmno_max=(1000, 1000), matriz=None, color=None):
+    def __init__(self, id, volumen=None, tmno_max=(1000, 1000), matriz=None, color=None):
         self.id = id
-        self.valor = valor
         if color is None:
             color = (random.randint(50, 250),
                      random.randint(50, 250),
                      random.randint(50, 250))
         self.color = color
         if volumen is not None:
+            self.valor = volumen
             self.matriz = self.ConstruirMatriz(volumen, tmno_max)
         elif matriz is not None:
             self.matriz = matriz
+            self.valor = 0
+            for i in range(len(self.matriz)):
+                for j in range(len(self.matriz[0])):
+                    if self.matriz[i][j] == self.id:
+                        self.valor += 1
 
     def ConstruirMatriz(self, volumen, tmno_max):  # metodo feo y penca
         tmno_max = (tmno_max[0] // 2, tmno_max[1] // 2)  # dividir por 2, más facil de manejar
@@ -59,7 +64,7 @@ def CrearObjetos(tmno_contenedor, vol_max):
 
     objetos = []
     for i in range(len(volums)):
-        objetos.append(Objeto(i + 1, random.randint(1, 100), volums[i], tmno_contenedor))
+        objetos.append(Objeto(i + 1, volums[i], tmno_contenedor))
 
     return objetos
 
@@ -178,7 +183,7 @@ def crearObjetosRellenoPerfecto(tmno_contenedor, numTrazos=60, maxVol=16):
         for j in range(tmno_contenedor[1]):
             if matrizContenedor[i][j] == 0:
                 matriz = armarMatrizObjeto((i, j), len(objetos) + 1, maxVol)
-                objetos.append(Objeto(len(objetos) + 1, random.randint(1, 100), matriz=matriz))
+                objetos.append(Objeto(len(objetos) + 1, matriz=matriz))
 
     return objetos
 
