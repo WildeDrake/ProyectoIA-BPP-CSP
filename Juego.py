@@ -94,7 +94,7 @@ def Juego(screen):
                     pantalla = 0
                     pos = (0, 0)
                     # Pantalla de victoria.
-            if contenedor.valor == Global.volumen or event.key == pygame.K_o:
+            if contenedor.valor == Global.area or event.key == pygame.K_o:
                 pantalla = 3
 
     screen.fill((0, 0, 0))

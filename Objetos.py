@@ -56,15 +56,15 @@ class Objeto():
 
 
 def CrearObjetos(tmno_contenedor, vol_max):
-    volums = []
+    areas = []
     vol_sum = 0
     while vol_sum < tmno_contenedor[0] * tmno_contenedor[1] * 3:
-        volums.append(math.ceil(random.triangular(1, min(tmno_contenedor[0] * tmno_contenedor[1], vol_max), 4)))
-        vol_sum += volums[-1]
+        areas.append(math.ceil(random.triangular(1, min(tmno_contenedor[0] * tmno_contenedor[1], vol_max), 4)))
+        vol_sum += areas[-1]
 
     objetos = []
-    for i in range(len(volums)):
-        objetos.append(Objeto(i + 1, volums[i], tmno_contenedor))
+    for i in range(len(areas)):
+        objetos.append(Objeto(i + 1, areas[i], tmno_contenedor))
 
     return objetos
 
