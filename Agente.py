@@ -18,7 +18,6 @@ def Agente1():
     global ConjObjetos
     global esquinas
 
-    esquinas = Esquinas()
 
 
 

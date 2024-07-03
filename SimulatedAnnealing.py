@@ -6,55 +6,58 @@ from scipy.spatial.distance import pdist
 import numpy as np
 
 """
-t0: an int, temperature
-alpha: an int, cooling coefficient here we use 'exponential annealing'
-n:  an int, the number of nodes on the map
-x:  list N size: position x 
+t0: un int, la temperatura inicial
+alpha: un int, el factor de enfriamiento
+n:  un int, el número de nodos
+x:  list N size: position x
 y:  list N size: position y 
 """
 
 
 class simulated_annealing:
     def __init__(self, x, y, t0, alpha, show):
-        self.t0 = t0
-        self.alpha = alpha
-        self.x = x
-        self.y = y
-        self.n = len(x)
-        self.node = [[x[i], y[i]] for i in range(self.n)]
-        self.distance = pdist(self.node)
-        self.outIte = 300
-        self.inIte = 20
+        self.t0 = t0 # Temperatura inicial.
+        self.alpha = alpha # Factor de enfriamiento.
+        self.x = x  # Posicion x.
+        self.y = y  # Posicion y.
+        self.n = len(x) # Numero de nodos.
+        self.node = [[x[i], y[i]] for i in range(self.n)]   # Nodos.
+        self.distance = pdist(self.node)    # Distancia entre nodos.
+        self.outIte = 300   # Numero de iteraciones.
+        self.inIte = 20    # Numero de iteraciones.
         self.p = np.array([0.3, 0.3, 0.4])  # swap/reversion/insertion
         self.show_animation = show
 
     def search(self):
-        r0 = permutation(self.n)
-        f0 = self.get_function_value(r0)
-        bestR = r0
-        bestscore = f0
-        scores = [bestscore]
-        T = self.t0
-        for outite in range(self.outIte):
-            for inite in range(self.inIte):
-                r1 = self.get_neighbor(r0)
-                # print(f'r0={r0},r1={r1}\n')
-                f1 = self.get_function_value(r1)
-                if f1 <= f0:
-                    r0 = r1
+        r0 = permutation(self.n) # Es una permutacion aleatoria de los números del 0 al n-1.
+        f0 = self.get_function_value(r0) # Calcula el valor de la funcion para la permutacion r0.
+        bestR = r0  # bestR guarda la mejor permutacion encontrada.
+        bestscore = f0 # bestscore guarda el valor de la funcion para la mejor permutacion encontrada.
+        scores = [bestscore] # scores guarda el valor de la funcion para cada iteracion.
+        T = self.t0 # T es la temperatura.
+        for outite in range(self.outIte): # outite es el numero de iteraciones.
+            for inite in range(self.inIte): # inite es el numero de iteraciones.
+                r1 = self.get_neighbor(r0) # r1 es un vecino de r0.
+                f1 = self.get_function_value(r1) # f1 es el valor de la funcion para la permutacion r1.
+                if f1 <= f0: # Si f1 es menor o igual a f0.
+                    r0 = r1 # Swap por que r1 es mejor camino que r0.
                     f0 = f1
-                else:
-                    delta = (f1 - f0) / f0
-                    p = np.exp(-delta / T)
-                    if random.random() <= p:
-                        r0 = r1
+                else: # Si f0 es menor a f1, es decir no es mejor.
+                    delta = (f1 - f0) / f0 # Calcula el delta.
+                    p = np.exp(-delta / T) # Calcula la probabilidad.
+                    if random.random() <= p: # La parte aleatoria de Simulated Annealing.
+                                             # Si el numero aleatorio es menor o igual a la probabilidad.
+                        r0 = r1 # Swap por aleatoriedad.
                         f0 = f1
-                if f0 < bestscore:
-                    bestR = r0
+                if f0 < bestscore: # Si f0 es menor a bestscore.
+                    bestR = r0 # Swap por que f0 es mejor que bestscore.
                     bestscore = f0
             scores.append(bestscore)
             print(f'ite={outite}, f_value = {bestscore}\n')
-            T = self.alpha * T
+            T = self.alpha * T # Baja la temperatura.
+
+
+            # Ignorar, esto es solo para animacion.
             if self.show_animation:
                 plt.cla()
                 route = r0.copy()
@@ -71,9 +74,12 @@ class simulated_annealing:
                 if outite != self.outIte - 1:
                     a1.remove()
                     # a2.remove()
+        # Esto igual es animacion kkkkkkkkkkk.
         if self.show_animation:
             plt.pause(0)
 
+
+# Esta funcion calcula el camino r que le damos, en nuestro caso sera diferente.
     def get_function_value(self, x0):
         '''
         here the function value (what we are going to minimize) is the total length of path
@@ -87,6 +93,7 @@ class simulated_annealing:
             f += (self.x[u] - self.x[v]) ** 2 + (self.y[u] - self.y[v]) ** 2
         return f
 
+# Esta funcion nos da un vecino de x. En nuestro caso esta por definirse lo que consideraremos vecino. (¿sera una permuitacion cercana?)
     def get_neighbor(self, x):
         index = choice([1, 2, 3], p=self.p.ravel())
         if index == 1:
@@ -100,38 +107,41 @@ class simulated_annealing:
             newx = self.insertion(x)
         return newx
 
+# Esta funcion invierte el camino entre dos puntos aleatorios.
     def reversion(self, x):
-        newx = x.copy()
-        tmp = permutation(self.n)
-        s1 = min(tmp[:2])
-        s2 = max(tmp[:2])
-        newx[s1:s2] = newx[s1:s2][::-1]
+        newx = x.copy() # Copia de el camino x.
+        tmp = permutation(self.n) # Permutacion aleatoria de los numeros del 0 al n-1.
+        s1 = min(tmp[:2]) # El minimo de los dos primeros numeros de la permutacion.
+        s2 = max(tmp[:2]) # El maximo de los dos primeros numeros de la permutacion.
+        newx[s1:s2] = newx[s1:s2][::-1] # Invierte el camino entre s1 y s2.
         return newx
 
+# Esta funcion intercambia dos puntos aleatorios.
     def swap(self, x):
-        newx = x.copy()
-        tmp = permutation(self.n)
-        s1 = min(tmp[:2])
-        s2 = max(tmp[:2])
-        tmp = newx[s1]
-        newx[s1] = newx[s2]
-        newx[s2] = tmp
+        newx = x.copy() # Copia de el camino x.
+        tmp = permutation(self.n) # Permutacion aleatoria de los numeros del 0 al n-1.
+        s1 = min(tmp[:2]) # El minimo de los dos primeros numeros de la permutacion.
+        s2 = max(tmp[:2]) # El maximo de los dos primeros numeros de la permutacion.
+        tmp = newx[s1] # Guarda el valor de newx[s1].
+        newx[s1] = newx[s2] # Cambia el valor de newx[s1] por el valor de newx[s2].
+        newx[s2] = tmp # Cambia el valor de newx[s2] por el valor de tmp.
         return newx
+
 
     def insertion(self, x):
-        newx = x.copy()
-        tmp = permutation(self.n)
-        s1 = tmp[0]
-        s2 = tmp[1]
-        to_insert = newx[s1]
-        newx = np.delete(newx, s1)
-        if s1 < s2:
-            newx = np.insert(newx, s2, to_insert)
+        newx = x.copy() # Copia de el camino x.
+        tmp = permutation(self.n) # Permutacion aleatoria de los numeros del 0 al n-1.
+        s1 = tmp[0] # El primer numero de la permutacion.
+        s2 = tmp[1] # El segundo numero de la permutacion.
+        to_insert = newx[s1] # Guarda el valor de newx[s1].
+        newx = np.delete(newx, s1) # Elimina el valor de newx[s1].
+        if s1 < s2: # Si s1 es menor que s2.
+            newx = np.insert(newx, s2, to_insert) # Inserta el valor de to_insert en la posicion s2.
         else:
-            newx = np.insert(newx, s2 + 1, to_insert)
+            newx = np.insert(newx, s2 + 1, to_insert) # Inserta el valor de to_insert en la posicion s2 + 1.
         return newx
 
-
+# Esto es pal TSP.
 def point(x0, y0, r):
     theta = random.random() * 2 * math.pi
     return [x0 + math.cos(theta) * r, y0 + math.sin(theta) * r]
@@ -140,7 +150,7 @@ def point(x0, y0, r):
 def main():
     random.seed(10)
     n = 30
-    xy = [point(0, 0, 2) for _ in range(n)]
+    xy = [point(0, 0, 2) for _ in range(n)] # 30 puntos aleatorios.
     x = [point[0] for point in xy]
     y = [point[1] for point in xy]
     # plt.scatter(x,y)
