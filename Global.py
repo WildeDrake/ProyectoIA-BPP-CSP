@@ -1,6 +1,6 @@
 WIDTH, HEIGHT = 1800, 1000  # tamaño de la pantalla.
 dimContenedor = 14, 14    # tamaño de la contenedor.
-volumen = dimContenedor[0]*dimContenedor[1]  # volumen del contenedor.
+area = dimContenedor[0]*dimContenedor[1]  # area del contenedor.
 
 if min(WIDTH, HEIGHT) == WIDTH:
     if min(dimContenedor[0], dimContenedor[1]) == dimContenedor[0]:

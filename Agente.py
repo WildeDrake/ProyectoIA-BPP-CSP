@@ -18,3 +18,4 @@ def Agente():
     global contenedor
     global ConjObjetos
 
+    SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 0.05, 0.99, False, heuristica1)  # t0=0.05, alpha=0.99, show=False

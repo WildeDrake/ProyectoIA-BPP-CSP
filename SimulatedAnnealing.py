@@ -31,65 +31,58 @@ class simulated_annealing:
         self.ConjObjetos = ConjObjetos # Lista de objetos.
 
     def search(self):
-        r0 = permutation(self.n) # Es una permutacion aleatoria de los números del 0 al n-1.
-        f0 = self.get_function_value(r0) # Calcula el valor de la funcion para la permutacion r0.
-        bestR = r0  # bestR guarda la mejor permutacion encontrada.
-        bestscore = f0 # bestscore guarda el valor de la funcion para la mejor permutacion encontrada.
+        PunActual = self.get_function_value() # Calcula el valor de la funcion para la permutacion ConjObjetos.
+        bestConj = self.ConjObjetos.copy()  # bestConj guarda la mejor permutacion encontrada.
+        bestscore = PunActual # bestscore guarda el valor de la funcion para la mejor permutacion encontrada.
         scores = [bestscore] # scores guarda el valor de la funcion para cada iteracion.
         T = self.t0 # T es la temperatura.
+
         for outite in range(self.outIte): # outite es el numero de iteraciones.
+
             for inite in range(self.inIte): # inite es el numero de iteraciones.
-                r1 = self.get_neighbor(r0) # r1 es un vecino de r0.
-                f1 = self.get_function_value(r1) # f1 es el valor de la funcion para la permutacion r1.
-                if f1 <= f0: # Si f1 es menor o igual a f0.
-                    r0 = r1 # Swap por que r1 es mejor camino que r0.
-                    f0 = f1
-                else: # Si f0 es menor a f1, es decir no es mejor.
-                    delta = (f1 - f0) / f0 # Calcula el delta.
+                NuevoConj = self.get_neighbor(self.ConjObjetos) # NuevoConj es un vecino de self.ConjObjetos.
+                NuevoPun = self.get_function_value(NuevoConj) # NuevoPun es el valor de la funcion para la permutacion NuevoConj.
+                if NuevoPun <= PunActual: # Si NuevoPun es menor o igual a PunActual.
+                    self.ConjObjetos = NuevoConj # Swap por que NuevoConj es mejor camino que self.ConjObjetos.
+                    PunActual = NuevoPun
+                else: # Si PunActual es menor a NuevoPun, es decir no es mejor.
+                    delta = (NuevoPun - PunActual) / PunActual # Calcula el delta.
                     p = np.exp(-delta / T) # Calcula la probabilidad.
                     if random.random() <= p: # La parte aleatoria de Simulated Annealing.
                                              # Si el numero aleatorio es menor o igual a la probabilidad.
-                        r0 = r1 # Swap por aleatoriedad.
-                        f0 = f1
-                if f0 < bestscore: # Si f0 es menor a bestscore.
-                    bestR = r0 # Swap por que f0 es mejor que bestscore.
-                    bestscore = f0
+                        self.ConjObjetos = NuevoConj # Swap por aleatoriedad.
+                        PunActual = NuevoPun
+                if PunActual < bestscore: # Si PunActual es menor a bestscore.
+                    bestConj = self.ConjObjetos # Swap por que PunActual es mejor que bestscore.
+                    bestscore = PunActual
+
             scores.append(bestscore)
-            print(f'ite={outite}, f_value = {bestscore}\n')
             T = self.alpha * T # Baja la temperatura.
 
-
+        """
+            # print(f'ite={outite}, f_value = {bestscore}\n')
             # Ignorar, esto es solo para animacion.
             if self.show_animation:
                 plt.cla()
-                route = r0.copy()
-                route = np.append(route, r0[0])
-                # plt.plot(np.array(self.x)[route.astype(int)],np.array(self.y)[route.astype(int)],'o-', lw=2, color='orange')
-                # plt.plot(self.x,self.y,'o',color='red')
+                route = ConjObjetos.copy()
                 plt.title('simulated_annealing')
                 plt.plot(scores)
                 a1 = plt.annotate(f'step:{outite}\n f:{round(bestscore, 2)}', xy=(0.85, 0.9), xycoords='axes fraction',
                                   color='black')
-                # a2 = plt.annotate(f'T={self.t0}', xy=(0.5, 1.05), xycoords='axes fraction',color='black')
                 plt.axis('equal')
                 plt.pause(0.001)
                 if outite != self.outIte - 1:
                     a1.remove()
-                    # a2.remove()
         # Esto igual es animacion kkkkkkkkkkk.
         if self.show_animation:
             plt.pause(0)
+        """
 
 
 # Esta funcion calcula el camino r que le damos, en nuestro caso sera diferente.
-    def get_function_value(self, x0):
-        '''
-        here the function value (what we are going to minimize) is the total length of path
-        '''
-
+    def get_function_value(self):
         cont = Contenedor.Contenedor(Global.dimContenedor)
         self.heuristic(cont, self.ConjObjetos)
-
         return Global.volumen - cont.valor
 
 # Esta funcion nos da un vecino de x. En nuestro caso esta por definirse lo que consideraremos vecino. (¿sera una permuitacion cercana?)
@@ -139,25 +132,3 @@ class simulated_annealing:
         else:
             newx = np.insert(newx, s2 + 1, to_insert) # Inserta el valor de to_insert en la posicion s2 + 1.
         return newx
-
-# Esto es pal TSP.
-def point(x0, y0, r):
-    theta = random.random() * 2 * math.pi
-    return [x0 + math.cos(theta) * r, y0 + math.sin(theta) * r]
-
-
-def main():
-    random.seed(10)
-    n = 30
-    xy = [point(0, 0, 2) for _ in range(n)] # 30 puntos aleatorios.
-    x = [point[0] for point in xy]
-    y = [point[1] for point in xy]
-    # plt.scatter(x,y)
-    # plt.axis("equal")
-    # plt.show()
-    sl = simulated_annealing(x, y, t0=0.05, alpha=0.99, show=True)
-    sl.search()
-
-
-if __name__ == '__main__':
-    main()

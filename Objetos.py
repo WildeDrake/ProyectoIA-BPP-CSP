@@ -5,16 +5,16 @@ from looplist import looplist
 random.seed(777)
 
 class Objeto():
-    def __init__(self, id, volumen=None, tmno_max=(1000, 1000), matriz=None, color=None):
+    def __init__(self, id, area=None, tmno_max=(1000, 1000), matriz=None, color=None):
         self.id = id
         if color is None:
             color = (random.randint(50, 250),
                      random.randint(50, 250),
                      random.randint(50, 250))
         self.color = color
-        if volumen is not None:
-            self.valor = volumen
-            self.matriz = self.ConstruirMatriz(volumen, tmno_max)
+        if area is not None:
+            self.valor = area
+            self.matriz = self.ConstruirMatriz(area, tmno_max)
         elif matriz is not None:
             self.matriz = matriz
             self.valor = 0
@@ -23,11 +23,11 @@ class Objeto():
                     if self.matriz[i][j] == self.id:
                         self.valor += 1
 
-    def ConstruirMatriz(self, volumen, tmno_max):  # metodo feo y penca
+    def ConstruirMatriz(self, area, tmno_max):  # metodo feo y penca
         tmno_max = (tmno_max[0] // 2, tmno_max[1] // 2)  # dividir por 2, más facil de manejar
         lista_cuadrados = []  # Lista de cuadrados que forman el objeto.
         lista_posibles_cuadrados = [(0, 0)]  # Lista de cuadrados que pueden ser añadidos.
-        for _ in range(volumen):
+        for _ in range(area):
             # Elegir un cuadrado aleatorio.
             nuevo_cuadrado = random.choice(lista_posibles_cuadrados)
             lista_cuadrados.append(nuevo_cuadrado)
