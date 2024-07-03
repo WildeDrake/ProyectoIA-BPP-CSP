@@ -1,5 +1,5 @@
 WIDTH, HEIGHT = 1800, 1000  # tamaño de la pantalla.
-dimContenedor = 20, 20    # tamaño de la contenedor.
+dimContenedor = 14, 14    # tamaño de la contenedor.
 volumen = dimContenedor[0]*dimContenedor[1]  # volumen del contenedor.
 
 if min(WIDTH, HEIGHT) == WIDTH:

@@ -9,7 +9,7 @@ pantalla = 0        # 0 = pantalLa de seleccion de objetos.
                     # 1 = pantalla de colocacion de objetos.
                     # 2 = pantalla de quitar objetos.
 contenedor = Contenedor.Contenedor(Global.dimContenedor)
-ConjObjetos = Objetos.CrearObjetos(Global.dimContenedor, 16)
+ConjObjetos = Objetos.crearObjetosRellenoPerfecto(Global.dimContenedor)
 objetoseleccionado = 0
 objeto = ConjObjetos[0]
 pos = (0, 0)
