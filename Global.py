@@ -1,6 +1,6 @@
 WIDTH, HEIGHT = 1800, 1000  # tamaño de la pantalla.
 dimContenedor = 20, 20    # tamaño de la contenedor.
-tmno_cuad = 20  # tamaño en pixeles de las cuadriculas.
+volumen = dimContenedor[0]*dimContenedor[1]  # volumen del contenedor.
 
 if min(WIDTH, HEIGHT) == WIDTH:
     if min(dimContenedor[0], dimContenedor[1]) == dimContenedor[0]:
