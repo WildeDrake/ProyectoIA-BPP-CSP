@@ -98,6 +98,7 @@ def Juego(screen):
                 pantalla = 3
 
     screen.fill((0, 0, 0))
+    Dibujar.dibujar_background(screen)
     if pantalla == 0:
         Dibujar.dibujar_contenedor(screen, contenedor)
         Dibujar.dibujar_seleccion(screen, objeto, objetoseleccionado, ConjObjetos, contenedor)
