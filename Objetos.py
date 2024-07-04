@@ -1,8 +1,11 @@
 import random
 import math
+import Global
 from looplist import looplist
 
-random.seed(777)
+
+if Global.randConj != 0:
+    random.seed(Global.randConj)
 
 class Objeto():
     def __init__(self, id, area=None, tmno_max=(1000, 1000), matriz=None, color=None):
@@ -163,7 +166,7 @@ def crearObjetosRellenoPerfecto(tmno_contenedor, numTrazos=60, maxVol=16):
                     grilla[1][trazo[i][0]][trazo[i][1]] = 1
                 else:
                     grilla[1][trazo[i + 1][0]][trazo[i + 1][1]] = 1
-
+    """
     # print grilla
     for i in range(tmno_contenedor[0]):
         for j in range(tmno_contenedor[1]):
@@ -176,6 +179,7 @@ def crearObjetosRellenoPerfecto(tmno_contenedor, numTrazos=60, maxVol=16):
             else:
                 print(" ", end="")
         print()
+    """
 
     objetos = []
     matrizContenedor = [[0 for _ in range(tmno_contenedor[1])] for _ in range(tmno_contenedor[0])]

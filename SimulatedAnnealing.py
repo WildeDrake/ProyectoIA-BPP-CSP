@@ -27,6 +27,7 @@ class simulated_annealing:
 
     # Función principal del Simulated Annealing.
     def search(self):
+        Lesgo = False
         punActual = self.get_function_value(self.ConjObjetos)   # Evaluamos el conjuntos actual y guardamos su puntaje.
         bestConj = self.ConjObjetos.copy()      # Guarda la mejor permutacion encontrada hasta el momento.
         bestPun = punActual     # Guarda el puntaje de la mejor permutación hasta el momento.
@@ -55,11 +56,18 @@ class simulated_annealing:
                 if punActual < bestPun:
                     bestConj = self.ConjObjetos
                     bestPun = punActual
-
-            T = self.alpha * T          # Baja la temperatura.
+                # si se llego a una solucion optima, se termina el algoritmo.
+                if punActual == 0:
+                    Lesgo = True
+                    break
+            T = self.alpha * T        # Baja la temperatura.
             puntajes.append(bestPun)  # Guarda el valor de la funcion para cada iteracion. (Esto es para graficar)
 
-            # print(f'ite={outite}, f_value = {bestPun}\n')
+            print(f'ite={outite}, f_value = {bestPun}\n')
+
+            if(Lesgo):
+                break
+
         """# Animacion del Grafico.
             # Ignorar, esto es solo para animacion.
             if self.show_animation:
