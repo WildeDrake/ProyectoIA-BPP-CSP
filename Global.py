@@ -1,6 +1,6 @@
 """ Parametros Que se pueden modificar """
 WIDTH, HEIGHT = 1800, 1000  # tamaño de la pantalla.
-dimContenedor = 14, 14    # tamaño de la contenedor.
+dimContenedor = 20, 20    # tamaño de la contenedor.
 randConj = 1        # 0 para seed aleatoria, otro para fijar la seed en ese valor.
 
 

@@ -75,7 +75,7 @@ def ColocarObjeto(contenedor, objeto, pos):
     for i in range(objeto.tamano()[0]):
         for j in range(objeto.tamano()[1]):
             if objeto.matriz[i][j] != 0:
-                contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.matriz[i][j]
+                contenedor.matriz[pos[0] + i][pos[1] + j] = objeto.id
     contenedor.objetos.append(objeto)
     contenedor.valor += objeto.valor
     return True
