@@ -130,13 +130,13 @@ def Agente():
     ConjObjetos = Objetos.crearObjetosRellenoPerfecto(Global.dimContenedor)
     contenedor = Contenedor.Contenedor(Global.dimContenedor)
 
-    heuristica2(contenedor, ConjObjetos)
-    print(contenedor.valor)
+    #heuristica2(contenedor, ConjObjetos)
+    #print(contenedor.valor)
 
-    """
-    SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 0.05, 0.99, False, readingOrder)  # t0=0.05, alpha=0.99, show=False
+
+    SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, False, readingOrder)  # t0=0.05, alpha=0.99, show=False
     SA.search()
-    """
+
 
 if __name__ == "__main__":
     Agente()

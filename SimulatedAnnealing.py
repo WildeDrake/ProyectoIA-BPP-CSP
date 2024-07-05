@@ -11,15 +11,16 @@ import Objetos
 
 class simulated_annealing:
     # Contructor
-    def __init__(self, ConjObjetos, t0, alpha, show, heuristic: callable):
+    def __init__(self, ConjObjetos, iter, show, heuristic: callable):
         # Parametros del Simulating annealing.
-        self.t0 = t0                        # Temperatura inicial.
-        self.alpha = alpha                  # Factor de Enfriamiento de la Temperatura.
-        self.outIte = 300                   # Numero de iteraciones en las que se reduce la Temperatura.
-        self.inIte = 20                     # Numero de vecinos evaluados antes de bajar la Temperatura.
-        self.p = np.array([0.3, 0.3, 0.4])  # Probabilidad de las operaciones swap/reversion/insertion.
+        self.t0 = 100                               # Temperatura inicial.
+        tf = 0.01                                   # Temperatura final.
+        self.beta = (self.t0-tf)/(iter*self.t0*tf)  # Factor de Enfriamiento de la Temperatura.
+        self.outIte = iter                          # Numero de iteraciones en las que se reduce la Temperatura.
+        self.inIte = 20                             # Numero de vecinos evaluados antes de bajar la Temperatura.
+        self.p = np.array([0.4, 0.6])               # Probabilidad de las operaciones swap/insertion.
         # Parametros del problema.
-        self.heuristic = heuristic      # Heuris tica que evalua la solucion.
+        self.heuristic = heuristic      # Heuristica que evalua la solucion.
         self.ConjObjetos = ConjObjetos  # Lista de objetos.
         self.n = len(ConjObjetos)       # Numero de objetos.
         # Esto es para la animacion
@@ -34,9 +35,11 @@ class simulated_annealing:
         puntajes = [bestPun]    # Guarda el valor de la funcion para cada iteracion.
         T = self.t0     # Inicializamos la Temperatura.
 
+
         # Bucle principal del Simulated Annealing, en el cual disminuira la Temperatura.
         for outite in range(self.outIte):
 
+            uphillCount = 0
             # Bucle interno del Simulated Annealing, en el cual se evaluaran los vecinos de la permutacion actual.
             for inite in range(self.inIte):
                 nuevoConj = self.get_neighbor(self.ConjObjetos)     # Busca un vecino de ConjObjetos.
@@ -50,6 +53,7 @@ class simulated_annealing:
                     delta = (nuevoPun - punActual) / punActual  # Calcula el delta.
                     p = np.exp(-delta / T)                      # Calcula la probabilidad p.
                     if random.random() <= p:         # Reemplazamos segun p.
+                        uphillCount += 1
                         self.ConjObjetos = nuevoConj
                         punActual = nuevoPun
                 # Si esta solucion es la mejor hasta el momento, la guardamos.
@@ -60,10 +64,12 @@ class simulated_annealing:
                 if punActual == 0:
                     Lesgo = True
                     break
-            T = self.alpha * T        # Baja la temperatura.
+            T = T/(1 + self.beta*T)        # Baja la temperatura.
             puntajes.append(bestPun)  # Guarda el valor de la funcion para cada iteracion. (Esto es para graficar)
 
-            print(f'ite={outite}, f_value = {bestPun}\n')
+            print(f'\rite={outite}, f_value = {bestPun}, T = {T}, upHill = {uphillCount}', end="")
+            if outite % 30 == 0:
+                print()
 
             if(Lesgo):
                 break
@@ -95,22 +101,11 @@ class simulated_annealing:
 
     # Esta funcion nos da un vecino de x. En nuestro caso esta por definirse lo que consideraremos vecino. (¿sera una permuitacion cercana?)
     def get_neighbor(self, conj):
-        tipo = choice([1, 2, 3], p=self.p.ravel()) # Elige un tipo de vecino segun las probabilidades de p.
+        tipo = choice([1, 3], p=self.p.ravel()) # Elige un tipo de vecino segun las probabilidades de p.
         if tipo == 1:
             nuevoConj = self.swap(conj)
-        elif tipo == 2:
-            nuevoConj = self.reversion(conj)
         else:
             nuevoConj = self.insertion(conj)
-        return nuevoConj
-
-    # Esta funcion invierte el camino entre dos puntos aleatorios.
-    def reversion(self, conj):
-        nuevoConj = conj.copy()     # Copia de el camino conj.
-        tmp = permutation(self.n)   # Permutacion aleatoria de los numeros del 0 al n-1.
-        s1 = min(tmp[:2])   # El minimo de los dos primeros numeros de la permutacion.
-        s2 = max(tmp[:2])   # El maximo de los dos primeros numeros de la permutacion.
-        nuevoConj[s1:s2] = nuevoConj[s1:s2][::-1]    # Invierte el camino entre s1 y s2.
         return nuevoConj
 
     # Esta funcion intercambia dos puntos aleatorios.
