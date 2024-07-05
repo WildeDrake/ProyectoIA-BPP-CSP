@@ -3,9 +3,19 @@ import math
 import Global
 from looplist import looplist
 
-
 if Global.randConj != 0:
     random.seed(Global.randConj)
+
+# crear matriz a partir de puntos
+def matrizDesdePuntos(puntos, id):
+    min_x = min([c[0] for c in puntos])
+    max_x = max([c[0] for c in puntos])
+    min_y = min([c[1] for c in puntos])
+    max_y = max([c[1] for c in puntos])
+    matriz = [[0 for _ in range(max_x - min_x + 1)] for _ in range(max_y - min_y + 1)]
+    for c in puntos:
+        matriz[c[1] - min_y][c[0] - min_x] = id
+    return matriz
 
 class Objeto():
     def __init__(self, id, area=None, tmno_max=(1000, 1000), matriz=None, color=None):
@@ -44,25 +54,18 @@ class Objeto():
                         and -tmno_max[1] <= vecino[1] <= tmno_max[1]):
                     lista_posibles_cuadrados.append(vecino)
 
-        # crear matriz a partir de puntos
-        min_x = min([c[0] for c in lista_cuadrados])
-        max_x = max([c[0] for c in lista_cuadrados])
-        min_y = min([c[1] for c in lista_cuadrados])
-        max_y = max([c[1] for c in lista_cuadrados])
-        matriz = [[0 for _ in range(max_x - min_x + 1)] for _ in range(max_y - min_y + 1)]
-        for c in lista_cuadrados:
-            matriz[c[1] - min_y][c[0] - min_x] = self.id
+        matriz = matrizDesdePuntos(lista_cuadrados, self.id)
         return matriz
 
     def tamano(self):
         return len(self.matriz), len(self.matriz[0])
 
 
-def CrearObjetos(tmno_contenedor, vol_max):
+def CrearObjetos(tmno_contenedor, area_max):
     areas = []
     vol_sum = 0
     while vol_sum < tmno_contenedor[0] * tmno_contenedor[1] * 3:
-        areas.append(math.ceil(random.triangular(1, min(tmno_contenedor[0] * tmno_contenedor[1], vol_max), 4)))
+        areas.append(math.ceil(random.triangular(1, min(tmno_contenedor[0] * tmno_contenedor[1], area_max), 4)))
         vol_sum += areas[-1]
 
     objetos = []
@@ -72,47 +75,49 @@ def CrearObjetos(tmno_contenedor, vol_max):
     return objetos
 
 
-def crearObjetosRellenoPerfecto(tmno_contenedor, numTrazos=60, maxVol=16):
-    def armarMatrizObjeto(cuadradoInicial, id, maxVol):
+def crearObjetosRellenoPerfecto(tmno_contenedor, maxArea=16, numTrazos=None):
+    if numTrazos is None:
+        numTrazos = tmno_contenedor[0] * tmno_contenedor[1] // 8
+
+    def armarMatrizObjeto(cuadradoInicial, id, maxArea):
         lista_cuadrados = []
         cuadrados = [cuadradoInicial]
         matrizContenedor[cuadradoInicial[0]][cuadradoInicial[1]] = 1
         while len(cuadrados) > 0:
             cuadrado = cuadrados.pop(0)
             lista_cuadrados.append(cuadrado)
-            if not grilla[0][cuadrado[0]][cuadrado[1]] and maxVol > 0:
-                maxVol -= 1
+            if not grilla[0][cuadrado[0]][cuadrado[1]]:
                 c = cuadrado[0] - 1, cuadrado[1]
                 if matrizContenedor[c[0]][c[1]] == 0:
                     matrizContenedor[c[0]][c[1]] = 1
                     cuadrados.append(c)
-            if not grilla[1][cuadrado[0]][cuadrado[1]] and maxVol > 0:
-                maxVol -= 1
+            if not grilla[1][cuadrado[0]][cuadrado[1]]:
                 c = cuadrado[0], cuadrado[1] - 1
                 if matrizContenedor[c[0]][c[1]] == 0:
                     matrizContenedor[c[0]][c[1]] = 1
                     cuadrados.append(c)
-            if not grilla[0][cuadrado[0] + 1][cuadrado[1]] and maxVol > 0:
-                maxVol -= 1
+            if not grilla[0][cuadrado[0] + 1][cuadrado[1]]:
                 c = cuadrado[0] + 1, cuadrado[1]
                 if matrizContenedor[c[0]][c[1]] == 0:
                     matrizContenedor[c[0]][c[1]] = 1
                     cuadrados.append(c)
-            if not grilla[1][cuadrado[0]][cuadrado[1] + 1] and maxVol > 0:
-                maxVol -= 1
+            if not grilla[1][cuadrado[0]][cuadrado[1] + 1]:
                 c = cuadrado[0], cuadrado[1] + 1
                 if matrizContenedor[c[0]][c[1]] == 0:
                     matrizContenedor[c[0]][c[1]] = 1
                     cuadrados.append(c)
-        # crear matriz a partir de puntos
-        min_x = min([c[0] for c in lista_cuadrados])
-        max_x = max([c[0] for c in lista_cuadrados])
-        min_y = min([c[1] for c in lista_cuadrados])
-        max_y = max([c[1] for c in lista_cuadrados])
-        matriz = [[0 for _ in range(max_x - min_x + 1)] for _ in range(max_y - min_y + 1)]
-        for c in lista_cuadrados:
-            matriz[c[1] - min_y][c[0] - min_x] = id
-        return matriz
+
+        while len(lista_cuadrados) > maxArea:
+            half = len(lista_cuadrados) // 2
+            for c in lista_cuadrados[half:]:
+                matrizContenedor[c[0]][c[1]] = 0
+            lista_cuadrados = lista_cuadrados[:half]
+
+        if len(lista_cuadrados) == 1:
+            print(cuadradoInicial, lista_cuadrados[0])
+
+        return matrizDesdePuntos(lista_cuadrados, id)
+
 
     grilla = looplist([looplist([looplist([0 for _ in range(tmno_contenedor[1])]) for _ in range(tmno_contenedor[0])])
                        for _ in range(2)])
@@ -142,7 +147,8 @@ def crearObjetosRellenoPerfecto(tmno_contenedor, numTrazos=60, maxVol=16):
             signt = (signt[0] + direccion[0], signt[1] + direccion[1])
             trazo.append(signt)
 
-            if grilla[0][signt[0]][signt[1]] == 1 or grilla[1][signt[0]][signt[1]] == 1:
+            if (grilla[0][signt[0]][signt[1]] == 1 or grilla[1][signt[0]][signt[1]] == 1
+                    or grilla[0][signt[0]][signt[1] - 1] == 1 or grilla[1][signt[0] - 1][signt[1]] == 1):
                 break
             elif signt in trazo[:-1]:
                 for _ in range(trazo.index(signt) - 1):
@@ -150,7 +156,16 @@ def crearObjetosRellenoPerfecto(tmno_contenedor, numTrazos=60, maxVol=16):
                 break
 
         # si el trazo es muy corto, probabilidad de ignorarlo
-        if len(trazo) < 6 and random.random() < 0.9:
+        if len(trazo) <= 6 and random.random() < 0.9:
+            numTrazos.append(_)
+            continue
+        elif len(trazo) <= 5 and random.random() < 0.99:
+            numTrazos.append(_)
+            continue
+        elif len(trazo) <= 3 and random.random() < 0.99:
+            numTrazos.append(_)
+            continue
+        elif len(trazo) <= 2 and random.random() < 0.99:
             numTrazos.append(_)
             continue
 
@@ -186,7 +201,7 @@ def crearObjetosRellenoPerfecto(tmno_contenedor, numTrazos=60, maxVol=16):
     for i in range(tmno_contenedor[0]):
         for j in range(tmno_contenedor[1]):
             if matrizContenedor[i][j] == 0:
-                matriz = armarMatrizObjeto((i, j), len(objetos) + 1, maxVol)
+                matriz = armarMatrizObjeto((i, j), len(objetos) + 1, maxArea)
                 objetos.append(Objeto(len(objetos) + 1, matriz=matriz))
 
     return objetos
