@@ -22,6 +22,24 @@ def colocarObjeto(cont: Contenedor.Contenedor, obj: Objetos.Objeto, pos: tuple):
                 if count == obj.valor:
                     cont.valor += obj.valor
                     return
+def QuitarObjeto(contenedor, pos):
+    # Encontrar el objeto.
+    id = contenedor.matriz[pos[0]][pos[1]]
+    if id == 0:
+        return False
+    # Quitar matriz del objeto.
+    for i in range(contenedor.tamano[0]):
+        for j in range(contenedor.tamano[1]):
+            if contenedor.matriz[i][j] == id:
+                contenedor.matriz[i][j] = 0
+    # Quitar objeto del contenedor y añadirlo al conjunto.
+    for objeto in contenedor.objetos:
+        if objeto.id == id:
+            aux = objeto
+            contenedor.valor -= objeto.valor
+            contenedor.objetos.remove(objeto)
+            break
+    return True
 
 """ Aun no utilizo esto pero lo dejo por aca :v
 class Esquinas:
@@ -103,7 +121,8 @@ def heuristica2(cont: Contenedor.Contenedor, objs: list):
                     if max < contactos:
                         max = contactos
                         pos = (i, j)
-        colocarObjeto(cont, obj, pos)
+        if max != -1:
+            colocarObjeto(cont, obj, pos)
 
 
 ############################# Agente #############################
