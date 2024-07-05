@@ -2,6 +2,8 @@ import SimulatedAnnealing
 import Contenedor
 import Objetos
 import Global
+import Dibujar
+import pygame
 
 
 ####################### Funciones y clases utilizadas por las heuristicas #######################
@@ -93,7 +95,7 @@ def contarContactosObj(cont: Contenedor.Contenedor, obj: Objetos.Objeto, pos: tu
     return count
 
 ############################# Heuristica 1 #############################
-def readingOrder(cont: Contenedor.Contenedor, objs: list):
+def readingOrder(cont: Contenedor.Contenedor, objs: list, showAnimation = False, screen = None):
     # Se coloca objeto por objeto en el contenedor.
     for obj in objs:
         flag = False
@@ -102,6 +104,14 @@ def readingOrder(cont: Contenedor.Contenedor, objs: list):
             for j in range(cont.tamano[1] - obj.tamano()[1] + 1):
                 if verificarColision(cont, obj, (i, j)):
                     colocarObjeto(cont, obj, (i, j))
+                    # Animacion
+                    if showAnimation:
+                        cont.objetos.append(obj)
+                        screen.fill((0, 0, 0))
+                        Dibujar.dibujar_background(screen)
+                        Dibujar.dibujar_contenedor(screen, cont)
+                        pygame.display.flip()
+                    # Fin animacion
                     flag = True
                     break
             if flag:
@@ -109,7 +119,7 @@ def readingOrder(cont: Contenedor.Contenedor, objs: list):
 
 
 ############################# Heuristica 2 #############################
-def heuristica2(cont: Contenedor.Contenedor, objs: list):
+def heuristica2(cont: Contenedor.Contenedor, objs: list, showAnimation = False, screen = None):
     # Se coloca objeto por objeto en el contenedor.
     for obj in objs:
         max = -1
@@ -123,20 +133,35 @@ def heuristica2(cont: Contenedor.Contenedor, objs: list):
                         pos = (i, j)
         if max != -1:
             colocarObjeto(cont, obj, pos)
+        # Animacion
+        if showAnimation:
+            cont.objetos.append(obj)
+            screen.fill((0, 0, 0))
+            Dibujar.dibujar_background(screen)
+            Dibujar.dibujar_contenedor(screen, cont)
+            pygame.display.flip()
+        # Fin animacion
+
 
 
 ############################# Agente #############################
-def Agente():
-    ConjObjetos = Objetos.crearObjetosRellenoPerfecto(Global.dimContenedor)
-    contenedor = Contenedor.Contenedor(Global.dimContenedor)
-
-    #heuristica2(contenedor, ConjObjetos)
-    #print(contenedor.valor)
-
-
-    SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, False, readingOrder)  # t0=0.05, alpha=0.99, show=False
-    SA.search()
-
-
-if __name__ == "__main__":
-    Agente()
+def Agente(screen, modo, heuristica, showAnimation, Problem):
+    # Para Problema.
+    if Problem == 0:
+        ConjObjetos = Objetos.crearObjetosRellenoPerfecto(Global.dimContenedor)
+    else:
+        ConjObjetos = Objetos.CrearObjetos(Global.dimContenedor, 16)
+    # Para el modo.
+    if modo == 1: # Modo Heuristica.
+        cont = Contenedor.Contenedor(Global.dimContenedor)
+        if heuristica == 0:
+            readingOrder(cont, ConjObjetos, showAnimation, screen)
+        else:
+            heuristica2(cont, ConjObjetos, showAnimation, screen)
+        print("Valor total: ", cont.valor)
+    else: # Modo Simulated Annealing.
+        if heuristica == 0:
+            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, readingOrder)
+        else:
+            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, heuristica2)
+        SA.search()
