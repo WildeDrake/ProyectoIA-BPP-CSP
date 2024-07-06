@@ -2,7 +2,7 @@
 WIDTH, HEIGHT = 1800, 1000  # tamaño de la pantalla.
 dimContenedor = 20, 20    # tamaño de la contenedor.
 randConj = 1        # 0 para seed aleatoria, otro para fijar la seed en ese valor.
-
+bg = 1 # 0 para sharkcat, 1 para axolote
 
 """ Parametros que no se deben modificar """
 area = dimContenedor[0]*dimContenedor[1]  # area del contenedor.

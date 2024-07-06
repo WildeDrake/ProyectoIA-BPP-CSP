@@ -87,6 +87,10 @@ def dibujar_win(screen, contenedor):
     screen.blit(text, (Global.WIDTH // 2.1, Global.HEIGHT // 1.6))
 
 def dibujar_background(screen):
-    image = pygame.image.load("src/bg.png")
+    if(Global.bg == 0):
+        image = pygame.image.load("src/bg.png")
+    else:
+        image = pygame.image.load("src/bg2.png")
+
     pygame.transform.scale(image, (Global.WIDTH, Global.HEIGHT))
     screen.blit(image,(0,0))
