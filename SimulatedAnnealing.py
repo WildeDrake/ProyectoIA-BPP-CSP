@@ -28,7 +28,7 @@ class simulated_annealing:
 
     # Función principal del Simulated Annealing.
     def search(self):
-        print(self.n)
+        print("num objetos: " + str(self.n))
         Lesgo = False
         punActual = self.get_function_value(self.ConjObjetos)   # Evaluamos el conjuntos actual y guardamos su puntaje.
         bestConj = self.ConjObjetos.copy()      # Guarda la mejor permutacion encontrada hasta el momento.

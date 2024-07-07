@@ -4,8 +4,17 @@ import Global
 import Juego
 import Agente
 
-def main(mode = 0, heuristic = 0, showAnimation = 0, Problem = 0):
+def main(mode, heuristic, showAnimation, Problem):
     pygame.init()
+
+    if mode == None:
+        mode = 0
+    if heuristic == None:
+        heuristic = 0
+    if showAnimation == None:
+        showAnimation = 0
+    if Problem == None:
+        Problem = 0
 
     ########################### Modo Juego ###########################
     if mode == 0:
@@ -35,12 +44,12 @@ def main(mode = 0, heuristic = 0, showAnimation = 0, Problem = 0):
             pygame.display.set_caption('Bin Packing Problem Agent - readingOrder')
         else:
             screen = None
-        while Agente.Agente(screen, mode, heuristic, showAnimation, Problem):
+        while Agente.Agente(mode, heuristic, showAnimation, Problem, screen):
             pygame.time.Clock().tick(60)
 
     ########################### Modo SimulatedAnnealing ###########################
 
-
+    Agente.Agente(mode, heuristic, showAnimation, Problem)
 
     pygame.quit()
 
