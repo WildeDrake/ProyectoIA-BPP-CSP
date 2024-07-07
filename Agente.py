@@ -15,62 +15,6 @@ def verificarColision(cont: Contenedor.Contenedor, obj: Objetos.Objeto, pos: tup
     return True
 
 
-def crearListaColision(obj: Objetos.Objeto):
-    # verificador más eficiente, crea una lista de los cuadrados por revisar
-    cuadrados = []
-    for i in range(obj.tamano()[1]):  # inicializa la lista con el primer cuadrado de la primera fila
-        if obj.matriz[0][i] != 0:
-            cuadrados.append((0, i))
-            break
-
-    for y, x in cuadrados:  # recorre la lista hasta que este vacía
-        for ay, ax in [(y, x + 1), (y, x - 1), (y + 1, x), (y - 1, x)]:  # revisa los cuadrados adyacentes
-            if (ay, ax) not in cuadrados and 0 <= ay < obj.tamano()[0] \
-                    and 0 <= ax < obj.tamano()[1] and obj.matriz[ay][ax] != 0:
-                cuadrados.append((ay, ax))  # si el cuadrado es parte del objeto, lo añade a la lista
-
-    return cuadrados
-
-
-def verificarColisionConLista(cont: Contenedor.Contenedor, obj: Objetos.Objeto, pos: tuple, listaColision: list = None):
-    if listaColision is None:
-        listaColision = crearListaColision(obj)
-
-    for y, x in listaColision:  # recorre la lista hasta que este vacía
-        if cont.matriz[pos[0] + y][pos[1] + x] != 0:  # si el cuadrado colisiona con otro objeto
-            return False
-
-    return True
-
-
-def crearListaContacto(obj: Objetos.Objeto, listaColision: list = None):
-    if listaColision is None:
-        listaColision = crearListaColision(obj)
-
-    adyacentes = []
-
-    for y, x in listaColision:  # recorre la lista hasta que este vacía
-        for ay, ax in [(y, x + 1), (y, x - 1), (y + 1, x), (y - 1, x)]:  # revisa los cuadrados adyacentes
-            if (ay, ax) not in listaColision and (ay, ax) not in adyacentes:
-                adyacentes.append((ay, ax))
-
-    return adyacentes
-
-
-def contarContactos2(cont: Contenedor.Contenedor, obj: Objetos.Objeto, pos: tuple, listaContactos: list = None):
-    if listaContactos is None:
-        listaContactos = crearListaContacto(obj)
-
-    count = 0
-    for y, x in listaContactos:  # recorre la lista hasta que este vacía
-        ny, nx = pos[0] + y, pos[1] + x
-        if not 0 < ny < cont.tamano[0] or not 0 < nx < cont.tamano[1] or cont.matriz[ny][nx] != 0:
-            # si el cuadrado colisiona con el borde u otro objeto
-            count += 1
-
-    return count
-
-
 def colocarObjeto(cont: Contenedor.Contenedor, obj: Objetos.Objeto, pos: tuple):
     count = 0
     for i in range(obj.tamano()[0]):
@@ -161,12 +105,11 @@ def contarContactosObj(cont: Contenedor.Contenedor, obj: Objetos.Objeto, pos: tu
 def readingOrder(cont: Contenedor.Contenedor, objs: list, showAnimation=False, screen=None):
     # Se coloca objeto por objeto en el contenedor.
     for obj in objs:
-        listColis = crearListaColision(obj)
         flag = False
         # Se recorre el contenedor de izq a der, se baja una unidad y se repite.
         for i in range(cont.tamano[0] - obj.tamano()[0] + 1):
             for j in range(cont.tamano[1] - obj.tamano()[1] + 1):
-                if verificarColisionConLista(cont, obj, (i, j), listColis):
+                if obj.verificarColisionConLista(cont, (i, j)):
                     colocarObjeto(cont, obj, (i, j))
                     # Animacion
                     if showAnimation:
@@ -186,14 +129,12 @@ def readingOrder(cont: Contenedor.Contenedor, objs: list, showAnimation=False, s
 def heuristica2(cont: Contenedor.Contenedor, objs: list, showAnimation=False, screen=None):
     # Se coloca objeto por objeto en el contenedor.
     for obj in objs:
-        listColis = crearListaColision(obj)
-        listConta = crearListaContacto(obj, listColis)
         max = -1
         # Se recorre el contenedor de izq a der, se baja una unidad y se repite.
         for i in range(cont.tamano[0] - obj.tamano()[0] + 1):
             for j in range(cont.tamano[1] - obj.tamano()[1] + 1):
-                if verificarColisionConLista(cont, obj, (i, j), listColis):
-                    contactos = contarContactos2(cont, obj, (i, j), listConta)
+                if obj.verificarColisionConLista(cont, (i, j)):
+                    contactos = obj.contarContactosConLista(cont, (i, j))
                     if max < contactos:
                         max = contactos
                         pos = (i, j)

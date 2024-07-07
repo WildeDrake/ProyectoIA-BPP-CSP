@@ -1,6 +1,7 @@
 import random
 import math
 import Global
+import Contenedor
 from looplist import looplist
 
 if Global.randConj != 0:
@@ -35,6 +36,8 @@ class Objeto():
                 for j in range(len(self.matriz[0])):
                     if self.matriz[i][j] == self.id:
                         self.valor += 1
+        self.listColis = None
+        self.listCont = None
 
     def ConstruirMatriz(self, area, tmno_max):  # metodo feo y penca
         tmno_max = (tmno_max[0] // 2, tmno_max[1] // 2)  # dividir por 2, más facil de manejar
@@ -59,6 +62,60 @@ class Objeto():
 
     def tamano(self):
         return len(self.matriz), len(self.matriz[0])
+
+    def crearListaColision(self):
+        cuadrados = []
+        for i in range(self.tamano()[1]):  # inicializa la lista con el primer cuadrado de la primera fila
+            if self.matriz[0][i] != 0:
+                cuadrados.append((0, i))
+                break
+
+        for y, x in cuadrados:  # recorre la lista mientras esta va creciendo
+            for ay, ax in [(y, x + 1), (y, x - 1), (y + 1, x), (y - 1, x)]:  # revisa los cuadrados adyacentes
+                if (ay, ax) not in cuadrados and 0 <= ay < self.tamano()[0] \
+                        and 0 <= ax < self.tamano()[1] and self.matriz[ay][ax] != 0:
+                    cuadrados.append((ay, ax))  # si el cuadrado es parte del objeto, lo añade a la lista
+
+        return cuadrados
+
+    def verificarColisionConLista(self, cont: Contenedor.Contenedor, pos: tuple):
+        # verificador eficiente, usa una checklist de los cuadrados a revisar
+        if self.listColis is None:
+            self.listColis = self.crearListaColision()
+
+        for y, x in self.listColis:  # recorre la lista
+            if cont.matriz[pos[0] + y][pos[1] + x] != 0:  # si el cuadrado colisiona con otro objeto
+                return False
+
+        return True
+
+    def crearListaContacto(self):
+        if self.listColis is None:
+            self.listColis = self.crearListaColision()
+
+        adyacentes = []
+
+        for y, x in self.listColis:  # recorre la lista mientras esta va creciendo
+            for ay, ax in [(y, x + 1), (y, x - 1), (y + 1, x), (y - 1, x)]:  # revisa los cuadrados adyacentes
+                if (ay, ax) not in self.listColis and (ay, ax) not in adyacentes:
+                    adyacentes.append((ay, ax))
+
+        return adyacentes
+
+
+    def contarContactosConLista(self, cont: Contenedor.Contenedor, pos: tuple):
+        # verificador eficiente, usa una checklist de los cuadrados a revisar
+        if self.listCont is None:
+            self.listCont = self.crearListaContacto()
+
+        count = 0
+        for y, x in self.listCont:  # recorre la lista
+            ny, nx = pos[0] + y, pos[1] + x
+            if not 0 < ny < cont.tamano[0] or not 0 < nx < cont.tamano[1] or cont.matriz[ny][nx] != 0:
+                # si el cuadrado colisiona con el borde u otro objeto
+                count += 1
+
+        return count
 
 
 def CrearObjetos(tmno_contenedor, area_max):
