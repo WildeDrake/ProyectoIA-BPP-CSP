@@ -129,17 +129,18 @@ def readingOrder(cont: Contenedor.Contenedor, objs: list, showAnimation=False, s
 def heuristica2(cont: Contenedor.Contenedor, objs: list, showAnimation=False, screen=None):
     # Se coloca objeto por objeto en el contenedor.
     for obj in objs:
-        max = -1
+        maxCo = -1
+        pos = (-1, -1)
         # Se recorre el contenedor de izq a der, se baja una unidad y se repite.
         for i in range(cont.tamano[0] - obj.tamano()[0] + 1):
             for j in range(cont.tamano[1] - obj.tamano()[1] + 1):
                 if obj.verificarColisionConLista(cont, (i, j)):
                     contactos = obj.contarContactosConLista(cont, (i, j))
-                    if max < contactos:
-                        max = contactos
+                    if maxCo < contactos:
+                        maxCo = contactos
                         pos = (i, j)
-        if max != -1:
-            colocarObjeto(cont, obj, pos)
+        if maxCo != -1:
+            obj.colocarObjetoConLista(cont, pos)
         # Animacion
         if showAnimation:
             cont.objetos.append(obj)

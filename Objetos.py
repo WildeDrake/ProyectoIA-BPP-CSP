@@ -64,24 +64,22 @@ class Objeto():
         return len(self.matriz), len(self.matriz[0])
 
     def crearListaColision(self):
-        cuadrados = []
+        self.listColis = []
         for i in range(self.tamano()[1]):  # inicializa la lista con el primer cuadrado de la primera fila
             if self.matriz[0][i] != 0:
-                cuadrados.append((0, i))
+                self.listColis.append((0, i))
                 break
 
-        for y, x in cuadrados:  # recorre la lista mientras esta va creciendo
+        for y, x in self.listColis:  # recorre la lista mientras esta va creciendo
             for ay, ax in [(y, x + 1), (y, x - 1), (y + 1, x), (y - 1, x)]:  # revisa los cuadrados adyacentes
-                if (ay, ax) not in cuadrados and 0 <= ay < self.tamano()[0] \
+                if (ay, ax) not in self.listColis and 0 <= ay < self.tamano()[0] \
                         and 0 <= ax < self.tamano()[1] and self.matriz[ay][ax] != 0:
-                    cuadrados.append((ay, ax))  # si el cuadrado es parte del objeto, lo añade a la lista
-
-        return cuadrados
+                    self.listColis.append((ay, ax))  # si el cuadrado es parte del objeto, lo añade a la lista
 
     def verificarColisionConLista(self, cont: Contenedor.Contenedor, pos: tuple):
         # verificador eficiente, usa una checklist de los cuadrados a revisar
         if self.listColis is None:
-            self.listColis = self.crearListaColision()
+            self.crearListaColision()
 
         for y, x in self.listColis:  # recorre la lista
             if cont.matriz[pos[0] + y][pos[1] + x] != 0:  # si el cuadrado colisiona con otro objeto
@@ -91,22 +89,19 @@ class Objeto():
 
     def crearListaContacto(self):
         if self.listColis is None:
-            self.listColis = self.crearListaColision()
+            self.crearListaColision()
 
-        adyacentes = []
-
-        for y, x in self.listColis:  # recorre la lista mientras esta va creciendo
+        self.listCont = []
+        for y, x in self.listColis:  # recorre la lista
             for ay, ax in [(y, x + 1), (y, x - 1), (y + 1, x), (y - 1, x)]:  # revisa los cuadrados adyacentes
-                if (ay, ax) not in self.listColis and (ay, ax) not in adyacentes:
-                    adyacentes.append((ay, ax))
-
-        return adyacentes
+                if (ay, ax) not in self.listColis and (ay, ax) not in self.listCont:
+                    self.listCont.append((ay, ax))
 
 
     def contarContactosConLista(self, cont: Contenedor.Contenedor, pos: tuple):
         # verificador eficiente, usa una checklist de los cuadrados a revisar
         if self.listCont is None:
-            self.listCont = self.crearListaContacto()
+            self.crearListaContacto()
 
         count = 0
         for y, x in self.listCont:  # recorre la lista
@@ -116,6 +111,13 @@ class Objeto():
                 count += 1
 
         return count
+
+    def colocarObjetoConLista(self, cont: Contenedor.Contenedor, pos: tuple):
+        if self.listColis is None:
+            self.crearListaColision()
+        for y, x in self.listColis:
+            cont.matriz[pos[0] + y][pos[1] + x] = self.id
+        cont.valor += self.valor
 
 
 def CrearObjetos(tmno_contenedor, area_max):

@@ -11,14 +11,14 @@ import Objetos
 
 class simulated_annealing:
     # Contructor
-    def __init__(self, ConjObjetos, iter, show, heuristic: callable):
+    def __init__(self, ConjObjetos: list, iter, show, heuristic: callable):
         # Parametros del Simulating annealing.
         t0 = 100                                    # Temperatura inicial.
         tf = 0.05                                   # Temperatura final.
         self.T = t0                                 # Temperatura actual.
         self.beta = (t0-tf)/(iter*t0*tf)            # Factor de Enfriamiento de la Temperatura.
         self.outIte = iter                          # Numero de iteraciones en las que se reduce la Temperatura.
-        self.inIte = 20                             # Numero de vecinos evaluados antes de bajar la Temperatura.
+        self.inIte = 16                             # Numero de vecinos sin mejora antes de alcanzar equilibrio.
         # Parametros del problema.
         self.heuristic = heuristic      # Heuristica que evalua la solucion.
         self.ConjObjetos = ConjObjetos  # Lista de objetos.
@@ -69,13 +69,13 @@ class simulated_annealing:
 
                 inite += 1
 
-            print(f'\rite={outite}, f_value = {bestPun}, T = {self.T}, upHill = {uphillCount}, VD = {int(np.floor(np.exp((np.log(self.n)/self.outIte)*outite)) - 1)}', end="")
+            print(f'\rite={outite}, f_value = {bestPun}, T = {self.T}, upHill = {uphillCount}'
+                  f', VD = {int(np.floor(np.exp((np.log(self.n)/self.outIte)*outite)) - 1)}', end="")
+            if outite % 30 == 0:
+                print()  # salto de linea cada 30 iteraciones.
 
             self.T = self.T/(1 + self.beta*self.T)        # Baja la temperatura.
             puntajes.append(bestPun)  # Guarda el valor de la funcion para cada iteracion. (Esto es para graficar)
-
-            if outite % 30 == 0:
-                print()
 
             if(Lesgo):
                 break
