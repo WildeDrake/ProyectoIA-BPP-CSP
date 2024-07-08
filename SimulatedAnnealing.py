@@ -41,7 +41,8 @@ class simulated_annealing:
 
             uphillCount = 0
             # Bucle interno del Simulated Annealing, en el cual se evaluaran los vecinos de la permutacion actual.
-            for inite in range(self.inIte):
+            inite = 0
+            while inite < self.inIte:
                 nuevoConj = self.get_neighbor(self.ConjObjetos, outite)     # Busca un vecino de ConjObjetos.
                 nuevoPun = self.get_function_value(nuevoConj)       # Guarda el puntaje del vecino.
                 # Si el vecino es mejor que el conjunto actual nos quedamos con el nuevo conjunto.
@@ -58,12 +59,15 @@ class simulated_annealing:
                         punActual = nuevoPun
                 # Si esta solucion es la mejor hasta el momento, la guardamos.
                 if punActual < bestPun:
+                    inite = 0
                     bestConj = self.ConjObjetos
                     bestPun = punActual
                 # si se llego a una solucion optima, se termina el algoritmo.
                 if punActual == 0:
                     Lesgo = True
                     break
+
+                inite += 1
 
             print(f'\rite={outite}, f_value = {bestPun}, T = {self.T}, upHill = {uphillCount}, VD = {int(np.floor(np.exp((np.log(self.n)/self.outIte)*outite)) - 1)}', end="")
 
