@@ -150,6 +150,39 @@ def heuristica2(cont: Contenedor.Contenedor, objs: list, showAnimation=False, sc
         # Fin animacion
 
 
+############################# Heuristica 2.2 #############################
+def heuristica2_2(cont: Contenedor.Contenedor, objs: list[Objetos.Objeto], showAnimation=False, screen=None):
+    cont.empezarListaContactos()
+    for obj in objs:
+        if obj.listColis is None:
+            obj.crearListaColision()
+        numContactos = set()
+        max = -1
+        posMax = (-1, -1)
+        for cy, cx in cont.listCont:
+            for oy, ox in obj.listColis:
+                pos = (cy - oy, cx - ox)
+                if pos not in numContactos and 0 <= pos[0] < cont.tamano[0] - obj.tamano()[0] + 1 \
+                        and 0 <= pos[1] < cont.tamano[1] - obj.tamano()[1] + 1 \
+                        and obj.verificarColisionConLista(cont, pos):
+                    contactos = cont.contarContactosConLista(obj, pos)
+                    numContactos.add(pos)
+                    if max < contactos:
+                        max = contactos
+                        posMax = pos
+
+        if max != -1:
+            cont.colocarObjeto(obj, posMax)
+        # Animacion
+        if showAnimation:
+            cont.objetos.append(obj)
+            screen.fill((0, 0, 0))
+            Dibujar.dibujar_background(screen)
+            Dibujar.dibujar_contenedor(screen, cont)
+            pygame.display.flip()
+        # Fin animacion
+
+
 ############################# Agente #############################
 def Agente(modo, heuristica, showAnimation, Problem, screen=None):
     # Para Problema.
@@ -163,11 +196,14 @@ def Agente(modo, heuristica, showAnimation, Problem, screen=None):
         if heuristica == 0:
             readingOrder(cont, ConjObjetos, showAnimation, screen)
         else:
-            heuristica2(cont, ConjObjetos, showAnimation, screen)
+            heuristica2_2(cont, ConjObjetos, showAnimation, screen)
         print("Valor total: ", cont.valor)
     else:  # Modo Simulated Annealing.
         if heuristica == 0:
             SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, readingOrder)
-        else:
+        elif heuristica == 1:
             SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, heuristica2)
+        elif heuristica == 2:
+            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, heuristica2_2)
+
         SA.search()
