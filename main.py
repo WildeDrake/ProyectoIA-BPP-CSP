@@ -49,7 +49,9 @@ def main(mode, heuristic, showAnimation, Problem):
 
     ########################### Modo SimulatedAnnealing ###########################
 
-    Agente.Agente(mode, heuristic, showAnimation, Problem)
+    for i in range(30):
+        Global.randConj = i + 69
+        Agente.Agente(mode, heuristic, showAnimation, Problem)
 
     pygame.quit()
 

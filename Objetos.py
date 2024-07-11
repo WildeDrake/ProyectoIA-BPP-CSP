@@ -172,9 +172,6 @@ def crearObjetosRellenoPerfecto(tmno_contenedor, maxArea=16, numTrazos=None):
                 matrizContenedor[c[0]][c[1]] = 0
             lista_cuadrados = lista_cuadrados[:half]
 
-        if len(lista_cuadrados) == 1:
-            print(cuadradoInicial, lista_cuadrados[0])
-
         return matrizDesdePuntos(lista_cuadrados, id)
 
 
