@@ -13,7 +13,7 @@ import pygame
 
 class simulated_annealing:
     # Contructor
-    def __init__(self, ConjObjetos: list, iter, show, heuristic: callable, screen=None):
+    def __init__(self, ConjObjetos: list, iter, show, heuristic: callable, screen=None, file=None):
         # Parametros del Simulating annealing.
         t0 = 100  # Temperatura inicial.
         tf = 0.05  # Temperatura final.
@@ -29,6 +29,7 @@ class simulated_annealing:
         # Esto es para la animacion
         self.show_animation = show
         self.screen = screen
+        self.file = file
 
         if Global.randConj != 0:
             random.seed(Global.randConj)
@@ -76,6 +77,7 @@ class simulated_annealing:
 
                 inite += 1
 
+            self.file.write(f'{outite},{bestPun}\n')
             print(f'\rite={outite}, f_value = {bestPun}, T = {self.T}, upHill = {uphillCount}'
                   f', VD = {int(np.floor(np.exp((np.log(self.n) / self.outIte) * outite)) - 1)}', end="")
             if outite % 30 == 0:
@@ -86,6 +88,10 @@ class simulated_annealing:
 
             if (Lesgo):
                 break
+
+            if self.show_animation:
+                cont = Contenedor.Contenedor(Global.dimContenedor)
+                self.heuristic(cont, self.ConjObjetos, True, self.screen)
 
             """# Animacion del Grafico.
             # Ignorar, esto es solo para animacion.
@@ -101,7 +107,6 @@ class simulated_annealing:
                 if outite != self.outIte - 1:
                     a1.remove()"""
 
-
         print()  # linea en blanco al terminar
 
         # if self.show_animation:
@@ -111,7 +116,7 @@ class simulated_annealing:
     # Esta funcion evalua el conjunto actual segun la heuristica seleccionada.
     def get_function_value(self, conj):
         cont = Contenedor.Contenedor(Global.dimContenedor)
-        self.heuristic(cont, conj, self.show_animation, self.screen)
+        self.heuristic(cont, conj)
         return Global.area - cont.valor
 
     # Esta funcion nos da un vecino de x. En nuestro caso esta por definirse lo que consideraremos vecino. (¿sera una permuitacion cercana?)

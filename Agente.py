@@ -123,6 +123,8 @@ def readingOrder(cont: Contenedor.Contenedor, objs: list, showAnimation=False, s
                     break
             if flag:
                 break
+    if showAnimation:
+        pygame.time.delay(800)
 
 
 ############################# Heuristica 2 #############################
@@ -149,6 +151,8 @@ def heuristica2(cont: Contenedor.Contenedor, objs: list, showAnimation=False, sc
             Dibujar.dibujar_contenedor(screen, cont)
             pygame.display.flip()
         # Fin animacion
+    if showAnimation:
+        pygame.time.delay(500)
 
 
 ############################# Agente #############################
@@ -167,8 +171,11 @@ def Agente(modo, heuristica, showAnimation, Problem, screen=None):
             heuristica2(cont, ConjObjetos, showAnimation, screen)
         print("Valor total: ", cont.valor)
     else:  # Modo Simulated Annealing.
+        file = open("src/salida.csv", "w")
+        file.write("iteracion,valor\n")
         if heuristica == 0:
-            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, readingOrder, screen)
+            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, readingOrder, screen, file)
         else:
-            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, heuristica2, screen)
+            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, heuristica2, screen, file)
         SA.search()
+        file.close()
