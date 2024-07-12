@@ -7,11 +7,13 @@ import numpy as np
 import Global
 import Contenedor
 import Objetos
+import Dibujar
+import pygame
 
 
 class simulated_annealing:
     # Contructor
-    def __init__(self, ConjObjetos: list, iter, show, heuristic: callable):
+    def __init__(self, ConjObjetos: list, iter, show, heuristic: callable, screen=None):
         # Parametros del Simulating annealing.
         t0 = 100  # Temperatura inicial.
         tf = 0.05  # Temperatura final.
@@ -26,6 +28,10 @@ class simulated_annealing:
         self.n = len(ConjObjetos)  # Numero de objetos.
         # Esto es para la animacion
         self.show_animation = show
+        self.screen = screen
+
+        if Global.randConj != 0:
+            random.seed(Global.randConj)
 
     # Función principal del Simulated Annealing.
     def search(self):
@@ -81,7 +87,7 @@ class simulated_annealing:
             if (Lesgo):
                 break
 
-            """ # Animacion del Grafico. 
+            """# Animacion del Grafico.
             # Ignorar, esto es solo para animacion.
             if self.show_animation:
                 plt.cla()
@@ -93,19 +99,19 @@ class simulated_annealing:
                 plt.axis('equal')
                 plt.pause(0.001)
                 if outite != self.outIte - 1:
-                    a1.remove()
-                """
+                    a1.remove()"""
+
 
         print()  # linea en blanco al terminar
-                    
-        #if self.show_animation:
-        #    plt.pause(0)
 
+        # if self.show_animation:
+        #     plt.pause(0)
+        #     plt.show()
 
     # Esta funcion evalua el conjunto actual segun la heuristica seleccionada.
     def get_function_value(self, conj):
         cont = Contenedor.Contenedor(Global.dimContenedor)
-        self.heuristic(cont, conj)
+        self.heuristic(cont, conj, self.show_animation, self.screen)
         return Global.area - cont.valor
 
     # Esta funcion nos da un vecino de x. En nuestro caso esta por definirse lo que consideraremos vecino. (¿sera una permuitacion cercana?)

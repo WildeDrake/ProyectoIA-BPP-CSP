@@ -44,14 +44,17 @@ def main(mode, heuristic, showAnimation, Problem):
             pygame.display.set_caption('Bin Packing Problem Agent - readingOrder')
         else:
             screen = None
-        while Agente.Agente(mode, heuristic, showAnimation, Problem, screen):
-            pygame.time.Clock().tick(60)
+        Agente.Agente(mode, heuristic, showAnimation, Problem, screen)
+        pygame.time.Clock().tick(60)
 
     ########################### Modo SimulatedAnnealing ###########################
-
-    for i in range(30):
-        Global.randConj = i + 69
-        Agente.Agente(mode, heuristic, showAnimation, Problem)
+    if mode == 2:
+        if showAnimation == 1:
+            screen = pygame.display.set_mode((Global.WIDTH, Global.HEIGHT))
+            pygame.display.set_caption('Gato tiburón')
+        else:
+            screen = None
+        Agente.Agente(mode, heuristic, showAnimation, Problem, screen)
 
     pygame.quit()
 

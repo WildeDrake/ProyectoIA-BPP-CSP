@@ -111,9 +111,9 @@ def readingOrder(cont: Contenedor.Contenedor, objs: list, showAnimation=False, s
             for j in range(cont.tamano[1] - obj.tamano()[1] + 1):
                 if obj.verificarColisionConLista(cont, (i, j)):
                     colocarObjeto(cont, obj, (i, j))
+                    cont.objetos.append(obj)
                     # Animacion
                     if showAnimation:
-                        cont.objetos.append(obj)
                         screen.fill((0, 0, 0))
                         Dibujar.dibujar_background(screen)
                         Dibujar.dibujar_contenedor(screen, cont)
@@ -141,9 +141,9 @@ def heuristica2(cont: Contenedor.Contenedor, objs: list, showAnimation=False, sc
                         pos = (i, j)
         if maxCo != -1:
             obj.colocarObjetoConLista(cont, pos)
+            cont.objetos.append(obj)
         # Animacion
         if showAnimation:
-            cont.objetos.append(obj)
             screen.fill((0, 0, 0))
             Dibujar.dibujar_background(screen)
             Dibujar.dibujar_contenedor(screen, cont)
@@ -168,7 +168,7 @@ def Agente(modo, heuristica, showAnimation, Problem, screen=None):
         print("Valor total: ", cont.valor)
     else:  # Modo Simulated Annealing.
         if heuristica == 0:
-            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, readingOrder)
+            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, readingOrder, screen)
         else:
-            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, heuristica2)
+            SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, heuristica2, screen)
         SA.search()
