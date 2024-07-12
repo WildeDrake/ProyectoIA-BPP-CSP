@@ -77,7 +77,7 @@ class simulated_annealing:
 
                 inite += 1
 
-            self.file.write(f'{outite},{bestPun}\n')
+            self.file.write(f'{outite},{bestPun},best\n{outite},{punActual},actual\n')
             print(f'\rite={outite}, f_value = {bestPun}, T = {self.T}, upHill = {uphillCount}'
                   f', VD = {int(np.floor(np.exp((np.log(self.n) / self.outIte) * outite)) - 1)}', end="")
             if outite % 30 == 0:

@@ -172,7 +172,7 @@ def Agente(modo, heuristica, showAnimation, Problem, screen=None):
         print("Valor total: ", cont.valor)
     else:  # Modo Simulated Annealing.
         file = open("src/salida.csv", "w")
-        file.write("iteracion,valor\n")
+        file.write("iteracion,mejor f,f actual\n")
         if heuristica == 0:
             SA = SimulatedAnnealing.simulated_annealing(ConjObjetos, 300, showAnimation, readingOrder, screen, file)
         else:
