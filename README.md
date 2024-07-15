@@ -37,10 +37,10 @@ Las restricciones del problema serán:
 ## Instrucciones:
 **Para correr el juego, ejecutar main.py.** 
 En main.py se encontrarán cuatro variables entre las líneas 10 - 17 que determinan como se ejecutará el programa:
-	- mode: Para elegir el modo del programa. Si se desea “Jugar” (Manualmente colocar los objetos en el contenedor), se elige mode = 0. Si se desea correr una sola iteración de Simulated Annealing (El primer episodio del algoritmo), se elige mode = 1. Si se desea ejecutar todas las iteraciones de Simulated Annealing hasta encontrar la solución del problema elegido, se elige mode = 2. 
+  - mode: Para elegir el modo del programa. Si se desea “Jugar” (Manualmente colocar los objetos en el contenedor), se elige mode = 0. Si se desea correr una sola iteración de Simulated Annealing (El primer episodio del algoritmo), se elige mode = 1. Si se desea ejecutar todas las iteraciones de Simulated Annealing hasta encontrar la solución del problema elegido, se elige mode = 2. 
   - heuristic: Para elegir la heurística a utilizar. Si se desea ocupar countingOrder, se elige heuristic = 0. En cambio, si se desea ocupar ContactSurface se elige heuristic = 1. 
-	- showAnimation: Mostrar o no la animación de la interfaz mientras es resuelta por el agente. Si se desea ver sin la animación, se elige showAnimation = 0, y si se desea ver la animación se elige showAnimation = 1. 
-	- Problem: Elegir el problema a resolver. Si se desea solucionar el de Cutting Stock, se elige Problem = 0. Si se desea solucionar Bin Packing Problem, se elige Problem = 1.
+  - showAnimation: Mostrar o no la animación de la interfaz mientras es resuelta por el agente. Si se desea ver sin la animación, se elige showAnimation = 0, y si se desea ver la animación se elige showAnimation = 1. 
+  - Problem: Elegir el problema a resolver. Si se desea solucionar el de Cutting Stock, se elige Problem = 0. Si se desea solucionar Bin Packing Problem, se elige Problem = 1.
 Otras variables importantes se encuentran en Global.py, en la líneas 2-5:
   - WIDTH, HEIGHT = El ancho y el alto de la resolución de la ventana, respectivamente.
   - dimContenedor = Las dimensiones de ancho y alto del contenedor.
