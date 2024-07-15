@@ -41,7 +41,9 @@ En main.py se encontrarán cuatro variables entre las líneas 10 - 17 que determ
   - heuristic: Para elegir la heurística a utilizar. Si se desea ocupar countingOrder, se elige heuristic = 0. En cambio, si se desea ocupar ContactSurface se elige heuristic = 1. 
   - showAnimation: Mostrar o no la animación de la interfaz mientras es resuelta por el agente. Si se desea ver sin la animación, se elige showAnimation = 0, y si se desea ver la animación se elige showAnimation = 1. 
   - Problem: Elegir el problema a resolver. Si se desea solucionar el de Cutting Stock, se elige Problem = 0. Si se desea solucionar Bin Packing Problem, se elige Problem = 1.
+ 
 Otras variables importantes se encuentran en Global.py, en la líneas 2-5:
+
   - WIDTH, HEIGHT = El ancho y el alto de la resolución de la ventana, respectivamente.
   - dimContenedor = Las dimensiones de ancho y alto del contenedor.
   - randConj = Semilla con la cual se crean los objetos. Si se desea una seed aleatoria, se elige
