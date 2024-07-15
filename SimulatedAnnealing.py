@@ -86,12 +86,13 @@ class simulated_annealing:
             self.T = self.T / (1 + self.beta * self.T)  # Baja la temperatura.
             puntajes.append(bestPun)  # Guarda el valor de la funcion para cada iteracion. (Esto es para graficar)
 
-            if (Lesgo):
-                break
 
             if self.show_animation:
                 cont = Contenedor.Contenedor(Global.dimContenedor)
                 self.heuristic(cont, self.ConjObjetos, True, self.screen)
+
+            if (Lesgo):
+                break
 
             """# Animacion del Grafico.
             # Ignorar, esto es solo para animacion.

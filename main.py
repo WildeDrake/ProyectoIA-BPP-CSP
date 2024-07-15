@@ -6,15 +6,15 @@ import Agente
 
 def main(mode, heuristic, showAnimation, Problem):
     pygame.init()
-
+    ##Variables importantes aquí. Para ajustar tamaño del contenedor y resolución, ir a Global.py
     if mode == None:
-        mode = 0
+        mode = 1    ## modo == 0 es para jugar, modo == 1 es para una iteración de SA, modo == 2 es para mostrar toda iteración de SA
     if heuristic == None:
-        heuristic = 0
+        heuristic = 0 ## heuritic == 0 es para resolver con countingOrder, heuristic == 1 es para resolver con contactSurface
     if showAnimation == None:
-        showAnimation = 0
+        showAnimation = 1 ## showAnimation == 0 corre el agente sin animación, showAnimation == 1 da la animación
     if Problem == None:
-        Problem = 0
+        Problem = 0 ## Problem == 0 permite resolver el problema de Cutting Stock, Problem == 1 el de Bin Packing Problem
 
     ########################### Modo Juego ###########################
     if mode == 0:

@@ -1,8 +1,8 @@
 """ Parametros Que se pueden modificar """
-WIDTH, HEIGHT = 1800, 1000  # tamaño de la pantalla.
-dimContenedor = 20, 20    # tamaño del contenedor.
-randConj = 0        # 0 para seed aleatoria, otro para fijar la seed en ese valor.
-bg = 0  # 0 para sharkcat, 1 para axolote
+WIDTH, HEIGHT = 1920, 1080  # tamaño /resolución de la pantalla.
+dimContenedor = 10, 10    # tamaño del contenedor.
+randConj = 5        # 0 para seed aleatoria, otro para fijar la seed en ese valor.
+bg = 0  # 0 para fondo sharkcat, 1 para fondo axolote :)
 
 """ Parametros que no se deben modificar """
 area = dimContenedor[0]*dimContenedor[1]  # area del contenedor.
